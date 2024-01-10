@@ -1,7 +1,9 @@
-# Start here for the class.
+# Enrolled in PSYC 643 for Spring 2024 at GMU?
 
-## Get the syllabus
+Start here for the class.
 
-## Render it (or download the PDF)
+1. Get the syllabus
+2. Render it (or download the PDF)
+3. Read it
+4. Attend to the details
 
-## Start Reading
