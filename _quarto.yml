@@ -1,0 +1,37 @@
+project:
+  type: book
+
+book:
+  downloads: [pdf, epub]
+  title: "Genernal Linear Modeling- Part Deux"
+  subtitle: "PSYC 643 - Section 001"
+  author: "Patrick E. McKnight"
+  date: "1/9/2024"
+  repo-url: https://github.com/pem725/
+  
+  chapters:
+    - index.qmd
+    - overview.qmd
+    - objectives.qmd
+    - resources.qmd
+    - grading.qmd
+    - schedule.qmd
+    - policies.qmd
+    - technology.qmd
+    - references.qmd
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+    include-in-header:
+      text: |
+        \usepackage{makeidx}
+        \makeindex
+    include-after-body:
+      text: |
+        \printindex
+
+
+

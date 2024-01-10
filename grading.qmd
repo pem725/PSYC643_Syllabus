@@ -1,0 +1,23 @@
+---
+title: "Grading and Evaluation"
+editor: visual
+---
+
+## COURSE REQUIREMENTS
+
+### Quizzes (40\%)
+
+There will be twelve (12) short online quizzes given throughout the semester. Quizzes will be due by Friday 11:59pm on the weeks in which they are assigned. Students will be given 15 minutes to complete each quiz. You are allowed to drop two (2) quiz scores; thus only ten quiz scores will count toward your grade. There will be no makeup quizzes. If extenuating circumstances prevent you from a taking a quiz by the scheduled deadline, then this is the quiz you drop. 
+
+### Projects (40\%)
+
+The final project will be a cumulative project that demonstrates students’ mastery of material covered throughout the course. Students will be provided a dataset that they are to analyze.  Students will need to link primary ideas addressed in the class and to use a statistical package of their choice to analyze, interpret, and write up the results in APA format. This will be a group project (groups of 2 individuals). The final project will be due by Friday, December X at 11:59pm EST.
+
+## Lab Homework (20\%)
+
+Weekly homework and lab activities will be assigned to deepen and reinforce students’ understanding of key concepts and to develop competencies in statistical analysis and interpretation of results. It is expected that you will work on these assignments in lab and turn them in at the end of lab although they are officially due by the BEGINNING of the next lab meeting. 
+
+## GRADING
+
+Final grades will be assigned according to the following percentages: > 93% = A, 90 – 92% = A-, 87 – 89% = B+, 83 – 86% = B, 80 – 82% = B-, 70 – 79% = C, 60 – 69% = D, < 60% = F
+Note: A grade of C or lower denotes an unsatisfactory level of achievement for a graduate student.

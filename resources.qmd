@@ -1,0 +1,44 @@
+---
+title: "Instructional Resources"
+editor: visual
+---
+
+## REQUIRED AND RECOMMENDED READINGS
+
+Required readings will be available through a learning management system (or website) to students. Students who wish to continue to deepen their knowledge of statistics can find a list of “Deeper Dive” recommended readings.
+
+**There is no required textbook.**
+
+If you are looking for an excellent resource, or you are anticipating doing a lot of regression-based work, you should consider purchasing: 
+
+Cohen, J. Cohen, P, West, S.G., Aiken, L,S. (2003). Applied multiple regression/correlation analysis for the behavioral sciences (3rd ed.). Mahwah, NJ: Erlbaum.
+
+If you are looking for an excellent resource, or you are anticipating doing a lot of ANOVA – based work, you should consider purchasing: 
+
+Keppel, G., & Wickens, T. D. (2004). Design and Analysis: A Researcher’s Handbook (4th Edition). Englewood Cliffs, New Jersey: Prentice Hall. ISBN-10 ‏ : ‎ 0135159415
+
+## OTHER OPTIONAL TEXTS
+
+American Psychological Association. (2019). Publication manual (7th ed.). Washington, D. C.: American Psychological Association. (APA)
+
+Iversen, G.R. and Norporth, H. Analysis of Variance (Sage University Paper Series on Quantitative Applications in the Social Sciences, No. 07-001). Newbury Park, CA: Sage. (ISBN: 978-0803930018)
+
+Lewis-Beck, C. & Lewis-Beck, M.S. (2015). Applied Regression: An Introduction. Second Edition. Thousand Oaks, CA: Sage. (Sage University Paper Series on Quantitative Applications in the Social Sciences, No. 22). – Available electronically through the library.
+
+Berry, W.D. (1993). Understanding regression assumptions. Newbury Park, CA: Sage. (Sage University Paper Series on Quantitative Applications in the Social Sciences, No. 92). – Available electronically through the library.
+
+Darlington, R. B. & Hayes, A. F. (2017). Regression analysis and linear models: Concepts, applications, and implementation. New York, NY; The Guilford Press.
+
+Bruning, J.L. and Kintz, B.L. (1997). Computational handbook of statistics (4th Edition). Allyn & Bacon. (ISBN: 978-0673990853).
+
+Required Articles and Chapters: (Will be available online) \*Specific articles or chapters will be assigned as the semester progresses.
+
+Alkharusi, Hussain. (2012). Categorical Variables in Regression Analysis: A Comparison of Dummy and Effect Coding. International Journal of Education. 4. 202-210. 10.5296/ije.v4i2.1962.
+
+Coxe, S., West, S. G., & Aiken, L. S. (2009) The analysis of count data: A gentle introduction to Poisson regression and its alternatives, Journal of Personality Assessment, 91(2), 121-136. https://doi.org/10.1080/00223890802634175
+
+Frazier, P. A., Tix, A. P. & Barron, K. E. (2004). Testing moderator and mediator effects in counseling psychology research. Journal of Counseling Psychology, 51, 115-134.
+
+MacKinnon, D. P., Cheong, J., & Pirlott, A. G. (2012). Statistical mediation analysis. In H. Cooper, P. M. Camic, D. L. Long, A. T. Panter, D. Rindskopf, & K. J. Sher (Eds.), APA handbooks in psychology®. APA handbook of research methods in psychology, Vol. 2. Research designs: Quantitative, qualitative, neuropsychological, and biological (p. 313–331). American Psychological Association. https://doi.org/10.1037/13620-018
+
+Pampel, F. C. (2000). Quantitative Applications in the Social Sciences: Logistic regression Thousand Oaks, CA: SAGE. ). – Available electronically through the library.
