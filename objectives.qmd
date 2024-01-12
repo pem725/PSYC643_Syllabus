@@ -1,15 +1,12 @@
----
-title: "Objectives"
-editor: visual
----
+# Objectives {-}
 
-The purpose of this course is to further your introduction to data analysis, research design, and measurement. Your course work to date ought to have prepared you well by covering measures of central tendency, measures of dispersion, measures of association, and measures of difference - along with other rudimentary and relevant concepts. Due to time constraints, I do not intend to review these terms or their purposes so I urge every student to review that material prior to this course. What I do intend to cover is a comprehensive view of univariate, bivariate and multivariate statistics - why we use statistics, why you should learn these tools, and what are the most important features to learn and understand. You will gain practical skills in interpreting, applying and explaining statistical procedures. The combination of didactic sessions and a weekly laboratory meetings with students will offer each student the opportunity to see the procedures, conduct the procedures yourselves, and then teach one another what you learned. See one, do one, and teach one is a standard approach used in contemporary medical education and modern project-based learning.  If the method works for docs, it ought to work for you.
+The purpose of this course is to further your introduction to data analysis, research design, and measurement. Your course work to date ought to have prepared you well by covering measures of central tendency, measures of dispersion, measures of association, and measures of difference - along with other rudimentary and relevant concepts. Due to time constraints, I do not intend to review these terms or their purposes so I urge every student to review that material prior to this course. What I do intend to cover is a comprehensive view of univariate, bivariate and multivariate statistics - why we use statistics, why you should learn these tools, and what are the most important features to learn and understand. You will gain practical skills in interpreting, applying and explaining statistical procedures. The combination of didactic sessions and a weekly laboratory meetings with students will offer each student the opportunity to see the procedures, conduct the procedures yourselves, and then teach one another what you learned. See one, do one, and teach one is a standard approach used in contemporary medical education and modern project-based learning. If the method works for docs, it ought to work for you.
 
 ## Learning Objectives
 
-1. **Learn** a statistical software package
-2. **Generate** statistical results independent of others
-3. **Interpret** results accurately
-4. **Understand** the limitations of inference
-5. **Develop** a vocabularly that allows you to read and interpret the literature
-6. **Gain** the ability to choose the appropriate analytic approach for a specific question
+1.  **Learn** a statistical software package
+2.  **Generate** statistical results independent of others
+3.  **Interpret** results accurately
+4.  **Understand** the limitations of inference
+5.  **Develop** a vocabularly that allows you to read and interpret the literature
+6.  **Gain** the ability to choose the appropriate analytic approach for a specific question

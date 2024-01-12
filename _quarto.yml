@@ -2,12 +2,19 @@ project:
   type: book
 
 book:
-  downloads: [pdf, epub]
+  downloads: [pdf]
   title: "Genernal Linear Modeling- Part Deux"
-  subtitle: "PSYC 643 - Section 001"
-  author: "Patrick E. McKnight"
-  date: "1/9/2024"
-  repo-url: https://github.com/pem725/
+  subtitle: "PSYC 643 - Section 004"
+  author: 
+    - name: Patrick E. McKnight
+      affiliation: George Mason University
+      orcid: 0000-0002-9067-9066
+      email: pmcknigh@gmu.edu
+    
+  date: last-modified
+  site-url: https://posit.cloud/content/7338888
+  repo-url: https://github.com/pem725/PSYC643_Syllabus
+  description: "XXXs the syllabus for PSYC 643 - Section 004. This course is a continuation of PSYC 642. The course will focus on the application of general linear modeling to experimental and correlational designs. Topics include: multiple regression, analysis of variance, analysis of covariance, and selected advanced topics. The course will emphasize the application of these techniques to psychological research questions. Students will be expected to conduct analyses using statistical software and to interpret the results of these analyses."
   
   chapters:
     - index.qmd
@@ -15,16 +22,19 @@ book:
     - objectives.qmd
     - resources.qmd
     - grading.qmd
-    - schedule.qmd
     - policies.qmd
     - technology.qmd
-    - references.qmd
+    - schedule.qmd
+
+bibliography: references.bib
+
 
 format:
-  html:
+  html: 
     theme: cosmo
-  pdf:
-    documentclass: scrreprt
+    number-sections: false
+  pdf: 
+    documentclass: scrreport
     include-in-header:
       text: |
         \usepackage{makeidx}
@@ -33,5 +43,21 @@ format:
       text: |
         \printindex
 
+language:
+#   crossref-fig-title: "Graph"       # replaces "Figure"
 
+   crossref-thm-title: "Theorem"
+   crossref-lem-title: "Solution"    # replaces "Lemma"
+   crossref-cor-title: "Note"        # replaces "Corollary"
+   crossref-prp-title: "Procedure"   # replaces "Proposition"
+   crossref-cnj-title: "R Code"      # replaces "Conjecture"
+   crossref-def-title: "Definition"
+   crossref-exm-title: "Example"
+   crossref-exr-title: "Exercise"
 
+# https://github.com/quarto-dev/quarto-cli/blob/main/src/resources/language/_language.yml
+   callout-tip-title: "Tips & Tricks"         # green
+   callout-note-title: "Note"            # blue
+   callout-warning-title: "Watch out!"    # orange
+   callout-important-title: "Important"  # red
+   callout-caution-title: "Typo"         # yellow
