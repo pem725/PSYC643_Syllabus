@@ -5,7 +5,7 @@ bibliography: references.bib
 ---
 
 | Wk  | Date | Topic                                    | Reading                  | Depth                      | Notes |
-|------------|------------|------------|------------|------------|------------|
+|-----|------|------------------------------------------|--------------------------|----------------------------|-------|
 | 1   | 1/15 | Review                                   | @lewis-beck2024          | @aiken2002 @regressi       |       |
 | 2   | 1/22 | GLM Assumptions                          | @berry2024               | @keppel2004                |       |
 | 3   | 1/29 | GLM Diagnostics & Remediation            | @osborne2019             | @ernst2017                 |       |

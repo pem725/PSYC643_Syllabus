@@ -1,0 +1,12 @@
+name: psyc643_syllabus
+title: PSYC643_Syllabus
+username: pem725
+account: pem725
+server: posit.cloud
+hostUrl: https://api.posit.cloud/v1
+appId: 7338888
+bundleId: 8131636
+url: https://posit.cloud/content/7338888
+version: 1
+asMultiple: FALSE
+asStatic: TRUE

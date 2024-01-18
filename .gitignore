@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/.quarto/
+README_files/
+_book/**
+_site/**
+renv/
