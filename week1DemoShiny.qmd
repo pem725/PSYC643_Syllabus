@@ -1,0 +1,24 @@
+---
+title: "A Brief Introduction to the GLM - via Shiny"
+author: "Patrick E. McKnight"
+server: shiny
+---
+
+```{r}
+library(shiny)
+library(shinythemes)
+
+dat <- mtcars
+
+library(ggplot2)
+ggplot(dat, aes(x = wt, y = mpg)) +
+  geom_point() +
+  labs(
+    y = "Miles per gallon",
+    x = "Car's weight (1000 lbs)"
+  ) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_smooth() +
+  theme_minimal()
+```
+

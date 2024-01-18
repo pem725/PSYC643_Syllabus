@@ -6,7 +6,19 @@ A new beginning for most of you.
 
 I mean that you are starting a new course, and you are starting to learn a new programming language.  You are starting to learn a new way of thinking about problems.  You are starting to learn a new way of thinking about solutions.  You are starting to learn a new way of thinking about the world.
 
-```{r}
-# do some stuff here.  
+```{r warning=FALSE, message=FALSE}
+## a static implementation that is typical in today's teaching world
+dat <- mtcars
+
+library(ggplot2)
+ggplot(dat, aes(x = wt, y = mpg)) +
+  geom_point() +
+  labs(
+    y = "Miles per gallon",
+    x = "Car's weight (1000 lbs)"
+  ) +
+  geom_smooth(method = "lm", se = FALSE) +
+  geom_smooth() +
+  theme_minimal()
 ```
 
