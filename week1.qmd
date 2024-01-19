@@ -4,7 +4,7 @@ A new beginning for most of you.
 
 ## What do I mean?
 
-I mean that you are starting a new course, and you are starting to learn a new programming language.  You are starting to learn a new way of thinking about problems.  You are starting to learn a new way of thinking about solutions.  You are starting to learn a new way of thinking about the world.
+I mean that you are starting a new course, and you are starting to learn a new programming language. You are starting to learn a new way of thinking about problems. You are starting to learn a new way of thinking about solutions. You are starting to learn a new way of thinking about the world.
 
 ```{r warning=FALSE, message=FALSE}
 ## a static implementation that is typical in today's teaching world
@@ -22,3 +22,12 @@ ggplot(dat, aes(x = wt, y = mpg)) +
   theme_minimal()
 ```
 
+## Surely there is something more to this
+
+Yes, there is. See the [next example](https://www.kaggle.com/datasets/spittman1248/cdc-data-nutrition-physical-activity-obesity/data):
+
+```{r warning=FALSE, message=FALSE}
+dat2 <- read.csv("./Nutrition__Physical_Activity__and_Obesity_-_Behavioral_Risk_Factor_Surveillance_System.csv", T)
+knitr::kable(head(dat2))
+
+```
