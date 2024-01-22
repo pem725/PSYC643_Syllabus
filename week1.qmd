@@ -24,10 +24,11 @@ ggplot(dat, aes(x = wt, y = mpg)) +
 
 ## Surely there is something more to this
 
-Yes, there is. See the [next example](https://www.kaggle.com/datasets/spittman1248/cdc-data-nutrition-physical-activity-obesity/data):
-
 ```{r warning=FALSE, message=FALSE}
-dat2 <- read.csv("./Nutrition__Physical_Activity__and_Obesity_-_Behavioral_Risk_Factor_Surveillance_System.csv", T)
-knitr::kable(head(dat2))
+
+
+
 
 ```
+
+
