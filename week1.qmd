@@ -24,11 +24,6 @@ ggplot(dat, aes(x = wt, y = mpg)) +
 
 ## Surely there is something more to this
 
-```{r warning=FALSE, message=FALSE}
-
-
-
-
-```
+Yep.
 
 

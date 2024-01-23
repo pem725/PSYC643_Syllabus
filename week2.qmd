@@ -1,0 +1,30 @@
+# Week 2
+
+```{r}
+#| message: false
+#| warning: false
+#| error: false
+#| collapse-code: true
+#| results: "asis"
+
+library(tidyverse)
+library(summarytools)
+data(mtcars)
+dfSummary(mtcars,
+          plain.ascii = FALSE,
+          style = "grid",
+          graph.magnif = 0.75,
+          valid.col = T,
+          tmp.img.dir = "./tmp")
+```
+
+
+```{r}
+#| message: false
+#| warning: false
+#| error: false
+#| collapse-code: true
+
+
+```
+
