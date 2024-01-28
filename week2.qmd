@@ -1,5 +1,48 @@
 # Week 2
 
+## Purpose of This Week
+
+During this week, you will learn the following:
+
+1.  Review Basics
+
+-   The Process
+-   The Data
+-   The Model
+-   The Report
+
+2.  Code/Problem Solving
+3.  Evaluating Student Progress/Work
+
+## The Process
+
+```{mermaid}
+flowchart LR
+  subgraph Data
+    direction TB
+    A[Read] --> B[Inspect]
+    B --> C[Transform]
+    C --> D[Clean]
+    end
+  subgraph Model
+    direction TB
+    E[Postulate] --> F[Codify]
+    F --> G[Fit]
+    G --> H[Validate]
+    H --> I[Evaluate]
+    I --> J[Iterate]
+    end
+  subgraph Report
+    direction TB
+    K[Identify Keys] --> L[Summarize]
+    L --> M[Present]
+    end
+  Data --> Model
+  Model --> Report
+```
+
+## The Data
+
 ```{r}
 #| message: false
 #| warning: false
@@ -18,13 +61,48 @@ dfSummary(mtcars,
           tmp.img.dir = "./tmp")
 ```
 
+## The Model
 
-```{r}
+The most important step in the modeling process is thinking. You must use your head to think about the problem, the tools, and the data together to reach an end. Formalizing that process can be quite a challenge. So, I break down the steps here and reuse the same process for each analysis I present. Many of the steps outlined in the flowchart above fit into this process - often in a subtle, non-recursive way. Look no further than the code below.
+
+::: callout-important
+The Model Steps:
+
+1.  Postulate - figure out what you think you can test from the data: "Cars that are lighter and have less power ought to consume less fuel per mile."
+2.  Codify - the code below is a codification of that postulate: "Model mpg as a function of all the variables that are related to fuel consumption."
+3.  Fit - the model as codified in step 2 is fit in R using the `lm()` command.
+4.  Validate - we check assumptions for all models run.
+5.  Evaluate - how well does the model perform with the data? With other data? Do we have other data?
+6.  Iterate - lather, rinse, repeat. You know the drill.
+:::
+
+```{r InitModel}
 #| message: false
 #| warning: false
 #| error: false
 #| collapse-code: true
+#| results: "asis"
+library(tidyverse)
+library(knitr)
+library(broom)
 
+model2 <- lm(mpg ~ ., data = mtcars)
+broom::tidy(model2) %>%
+  kable(caption = "Model (Week 2): All Variables Predicting MPG", digits = 3)
+```
+
+Perhaps a deeper dive is necessary.  Let's look at the model assumptions.
+
+```{r corrplot}
+#| message: false
+#| warning: false
+#| error: false
+#| collapse-code: true
+library(corrplot)
+corrplot(cor(mtcars), method = "circle", type = "upper")
+```
+
+```{r remodel}
 
 ```
 

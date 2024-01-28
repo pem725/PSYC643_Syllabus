@@ -37,6 +37,9 @@ format:
     number-sections: false
     code-fold: true
     code-summary: "Show the code"
+    mermaid:
+      theme: default
+      options: "--backgroundColor transparent"
   pdf: 
     documentclass: scrreport
     include-in-header:
