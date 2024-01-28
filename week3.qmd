@@ -2,5 +2,4 @@
 title: "Week 3"
 ---
 
-Watch us interact in class.
-
+Watch us interact in class. I am using [this app](https://github.com/pem725/MRC) in class.
