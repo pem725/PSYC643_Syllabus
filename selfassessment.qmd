@@ -1,0 +1,52 @@
+---
+title: "Self-Assessment"
+---
+
+The following document provides output from a multiple regression. Throughout, you will find circled numbers alongside pieces of output. Please complete the following Google Form that indicates each of the items on the output that you understand.
+
+::: {.callout-important}
+Mark an X on all the numbered objects you
+:::
+
+## Part 1: The Correlation Matrix (in Graphical Form)
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(corrr)
+library(jtools)
+library(ggplot2)
+library(kableExtra)
+out <- datasets::mtcars %>% 
+  correlate() %>% 
+  rearrange() %>%
+  shave()
+rplot(out)
+
+```
+
+## Part 2: The Regression Table
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+mtcars$gear <- factor(mtcars$gear, labels = c("3", "4", "5"))
+lm1 <- lm(mpg ~ disp + cyl + cyl:vs, mtcars)
+#tbl_regression(model)
+summ(lm1)
+```
+
+## Part 3: The lm() Diagnositcs
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+par(mfrow=c(2,2))
+plot(lm1)
+par(mfrow=c(1,1))
+```
+## Part 4: The ANOVA Table
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+a1 <- aov(lm1)
+summary(a1)
+```
+
+
+
