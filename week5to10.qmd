@@ -87,8 +87,10 @@ contrasts(mtcars2$cyl.f)
 
 R defaults to dummy coding so if you prefer this method, just leave the handling of factors to R.  **NOT RECOMMENDED**.  Usually, we want to use a different coding method but for now, we will keep to dummy codes or, as referred to in the R world - treatment contrasts.
 
-```{r DummyCoding}
-#| title: "Dummy Coding"
+#### Simple 2-level Factor
+
+
+```{r DummyCoding2lvl}
 #| messages: false
 #| echo: true
 #| error: false
@@ -112,6 +114,10 @@ mtcars2 %>%
   group_by(vs.f) %>%
   summarise(mean_mpg = mean(mpg))
 ```
+
+
+
+
 
 ## Effects Coding
 
