@@ -104,8 +104,13 @@ mtcars2 %>%
   dplyr::as_tibble() %>%
   lm(mpg ~ vs.f, 
      data = .,
-     contrasts = list(vs.f = contr.sum)) %>%
+     contrasts = list(vs.f = contr.treatment)) %>%
   summary()
+
+# means by vs.f
+mtcars2 %>%
+  group_by(vs.f) %>%
+  summarise(mean_mpg = mean(mpg))
 ```
 
 ## Effects Coding
