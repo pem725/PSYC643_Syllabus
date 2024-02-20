@@ -112,16 +112,42 @@ mtcars2 %>%
 # means by vs.f
 mtcars2 %>%
   group_by(vs.f) %>%
-  summarise(mean_mpg = mean(mpg))
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
 ```
 
+#### Simple 3-level Factor
 
+```{r DummyCoding3lvl}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
 
+# Base R way
+contrasts(mtcars2$gear.f)
+fit <- lm(mpg ~ gear.f, data = mtcars2)
+summary(fit)
 
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ gear.f, 
+     data = .,
+     contrasts = list(gear.f = contr.treatment)) %>%
+  summary()
+
+# means by gear.f
+mtcars2 %>%
+  group_by(gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+```
 
 ## Effects Coding
 
-```{r EffectsCoding}
+```{r EffectsCoding2lvl}
 #| title: "Effects Coding"
 #| messages: false
 #| echo: true
