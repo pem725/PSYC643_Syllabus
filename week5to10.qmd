@@ -2,6 +2,23 @@
 title: "Weeks 5-10"
 ---
 
+```{r LoadLibraries}
+#| title: "Load Libraries"
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| results: "hide"
+library(knitr)
+library(gtsummary)
+library(tidyverse)
+library(flextable)
+library(kableExtra)
+library(ggplot2)
+```
+
+
+
 # Week 5
 
 ## Shoring up our understanding of the basics
@@ -10,13 +27,115 @@ Take the self-assessment please.
 
 # Week 6
 
+```{r OurData}
+#| title: "Our Data"
+#| messages: false
+#| echo: true
+#| error: false
+data(mtcars)
+str(mtcars)
+mtcars2 <- within(mtcars, {
+   vs.f <- factor(vs, labels = c("V", "S"))
+   am.f <- factor(am, labels = c("automatic", "manual"))
+   gear.f <- factor(gear, labels = c("3g", "4g", "5g"))
+   cyl.f <- factor(cyl, labels = c("4c", "6c", "8c"))
+   carb.f <- factor(carb, labels = c("1b", "2b", "3b", "4b", "6b", "8b"))
+   cyl.fo  <- ordered(cyl)
+   gear.fo <- ordered(gear)
+   carb.fo <- ordered(carb)
+})
+knitr::kable(str(mtcars2))
+```
+
+
 ## Categorical Predictors
 
 This week (2/19) is our week to get cracking on categorical predictors. We'll start with a review of the basics, and then address two:
+- Dummy coding
+- Effects coding
+
+Next week, we tackle contrast coding and polynomial coding.
+
+### Some Basics
+
+Categorical predictors are typically non-numerical.  In R, we refer to these predictors as factors.  Factors are a type of variable that takes on a limited number of different values; each value is referred to as a level.  For example, the variable `vs` in the `mtcars` dataset is a factor with two levels: `V` and `S`.  The variable `am` in the `mtcars` dataset is a factor with two levels: `automatic` and `manual`.  I created factors from two other variables - gear and cyl - and gave them labels that are more meaningful than the numbers that they represent.  All of these variables contain categorical data and, as a result, need to be converted into numbers so we can use them in the General Linear Model.
+
+
+#### Levels, Tables, and Contrasts
+
+```{r CodingBasics}
+#| title: "Coding Basics"
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+levels(mtcars2$vs)
+table(mtcars2$vs)
+levels(mtcars2$vs.f)
+levels(mtcars2$am)
+table(mtcars2$am)
+levels(mtcars2$am.f)
+levels(mtcars2$gear.f)
+levels(mtcars2$cyl.f)
+contrasts(mtcars2$vs.f)
+contrasts(mtcars2$gear.f)
+contrasts(mtcars2$cyl.f)
+```
+
 
 ### Dummy Coding
 
+R defaults to dummy coding so if you prefer this method, just leave the handling of factors to R.  **NOT RECOMMENDED**.  Usually, we want to use a different coding method but for now, we will keep to dummy codes or, as referred to in the R world - treatment contrasts.
 
+```{r DummyCoding}
+#| title: "Dummy Coding"
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+
+# Base R way
+contrasts(mtcars2$vs.f)
+fit <- lm(mpg ~ vs.f, data = mtcars2)
+summary(fit)
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ vs.f, 
+     data = .,
+     contrasts = list(vs.f = contr.sum)) %>%
+  summary()
+```
+
+## Effects Coding
+
+```{r EffectsCoding}
+#| title: "Effects Coding"
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+
+lm(mpg ~ 1, data = mtcars2) %>%
+  tbl_regression(intercept = TRUE, add_estimate_to_reference_rows=TRUE) %>% 
+  add_glance_table(include = c(r.squared, adj.r.squared)) %>% 
+  bold_p(t = 0.05) %>% 
+  as_flex_table()
+
+lm(mpg ~ vs.f, data = mtcars2) %>%
+  tbl_regression()
+
+lm2 <- lm(mpg ~ am.f, data = mtcars2) %>%
+  tbl_regression()
+
+lm3 <- lm(mpg ~ gear.f, data = mtcars2) %>%
+  tbl_regression()
+
+lm4 <- lm(mpg ~ cyl.f, data = mtcars2) %>%
+  tbl_regression()
+
+```
 
 
 
