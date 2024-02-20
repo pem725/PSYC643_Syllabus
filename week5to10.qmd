@@ -1,0 +1,55 @@
+---
+title: "Weeks 5-10"
+---
+
+# Week 5
+
+## Shoring up our understanding of the basics
+
+Take the self-assessment please.
+
+# Week 6
+
+## Categorical Predictors
+
+This week (2/19) is our week to get cracking on categorical predictors. We'll start with a review of the basics, and then address two:
+
+### Dummy Coding
+
+
+
+
+
+### Effects Coding
+
+
+# Week 7
+
+## Categorical Predictors (cont.)
+
+### Contrast Coding
+
+### Polynomial Coding
+
+# Week 8 - SPRING BREAK (No Class)
+
+# Week 9
+
+## Interactions (aka Moderation)
+
+### Simple Interactions
+
+### Complex Interactions
+
+# Week 10
+
+## Moderation (cont.)
+
+### Interactions with Categorical Predictors
+
+### Interactions with Multiple Predictors
+
+### Interactions with Polynomial Predictors
+
+### Interactions with Higher-Order Predictors
+

@@ -5,7 +5,7 @@ title: "Self-Assessment"
 The following document provides output from a multiple regression. Throughout, you will find circled numbers alongside pieces of output. Please complete the following Google Form that indicates each of the items on the output that you understand.
 
 ::: {.callout-important}
-Mark an X on all the numbered objects you
+Indicate all the parts you understand in the following document.  The numbered items in this Google form correspond to the circled numbers in the output.  If you understand a part that has a number assigned to it, please select "Yes;" conversely, if you do not know that material, please select "No."  Leave no items blank.  Thank you.
 :::
 
 ## Part 1: The Correlation Matrix (in Graphical Form)
@@ -37,9 +37,7 @@ summ(lm1)
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-par(mfrow=c(2,2))
-plot(lm1)
-par(mfrow=c(1,1))
+plot(lm1, ask=F)
 ```
 ## Part 4: The ANOVA Table
 
