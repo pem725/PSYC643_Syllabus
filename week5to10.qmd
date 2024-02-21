@@ -15,6 +15,7 @@ library(tidyverse)
 library(flextable)
 library(kableExtra)
 library(ggplot2)
+library(gtsummary)
 ```
 
 
@@ -89,7 +90,7 @@ contrasts(mtcars2$cyl.f)
 
 R defaults to dummy coding so if you prefer this method, just leave the handling of factors to R.  **NOT RECOMMENDED**.  Usually, we want to use a different coding method but for now, we will keep to dummy codes or, as referred to in the R world - treatment contrasts.
 
-#### Simple 2-level Factor
+#### One 2-level Factor
 
 ```{r DummyCoding2lvl}
 #| messages: false
@@ -120,7 +121,7 @@ mtcars2 %>%
 
 Note how the `V` level of the `vs.f` factor is the reference level.  The coefficient for `vs.fS` is the difference between the mean of `mpg` for the `S` level of `vs.f` and the mean of `mpg` for the `V` level of `vs.f`.  The coefficient for `vs.fV` is actually the intercept.  So, the intercept is the reference level mean and the regression coefficient for each level of the factor is the **difference between** that reference mean.  Pretty easy, huh?
 
-#### Simple 3-level Factor
+#### One k-level Factor
 
 Two-level factors are easy.  When we have two levels ($k=2$), we get one ($k-1$) new variables.  But what about a factor with three levels ($k=3$)?  We get two ($k-1$) new variables.  The first variable is the difference between the mean of the second level compared to the base level (often the first, unless otherwise specified).  The second variable is the difference between the mean of the third level and the mean of the third level.  The third level is the reference level.
 
@@ -150,7 +151,57 @@ mtcars2 %>%
   kable(digits = 3)
 ```
 
+#### Two Factors (Main Effects)
+
+```{r Dummy2FactorsMainEffects}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+table(mtcars2$vs.f, mtcars2$cyl.f)
+
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ vs.f + cyl.f, 
+     data = .,
+     contrasts = list(vs.f = contr.treatment, gear.f = contr.treatment)) %>%
+  summary()
+
+# means by vs.f and gear.f
+mtcars2 %>%
+  group_by(vs.f, cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+```
+
+
+
+#### Two Factors (Interaction)
+
+```{r Dummy2FactorsFullFactorial}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ vs.f * cyl.f, 
+     data = .,
+     contrasts = list(vs.f = contr.treatment, cyl.f = contr.treatment)) %>%
+  summary()
+
+# means by vs.f and gear.f
+mtcars2 %>%
+  group_by(vs.f, cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+```
+
+
+
 ## Effects Coding
+
+Effects coding is a bit more complicated.  The base comparison level of the factor is coded as $-1$; the focal level for each "new variable" is coded with a 1.  Recall that the same coding scheme exists for dummy coding but with effects coding, the LAST level is the default base comparison level and is coded with a $-1$ instead of a $0$.  The big deal about effects codes - at least compared to dummy coding - is that effects codes are centered AND orthogonal (kinda).  We will discuss these properties in a bit.  
 
 
 ```{r EffCoding2lvl}
@@ -176,10 +227,7 @@ mtcars2 %>%
 
 ```
 
-Note how the `V` level of the `vs.f` factor is the reference level.  The coefficient for `vs.fS` is the difference between the mean of `mpg` for the `S` level of `vs.f` and the mean of `mpg` for the `V` level of `vs.f`.  The coefficient for `vs.fV` is actually the intercept.  So, the intercept is the reference level mean and the regression coefficient for each level of the factor is the **difference between** that reference mean.  Pretty easy, huh?
-
-#### Simple 3-level Factor
-
+#### Three-level Factor (and more!)
 
 ```{r EffCoding3lvl}
 #| messages: false
@@ -189,14 +237,14 @@ Note how the `V` level of the `vs.f` factor is the reference level.  The coeffic
 
 mtcars2 %>%
   dplyr::as_tibble() %>%
-  lm(mpg ~ gear.f, 
+  lm(mpg ~ cyl.f, 
      data = .,
-     contrasts = list(gear.f = contr.sum)) %>%
+     contrasts = list(cyl.f = contr.sum)) %>%
   summary()
 
 # means by gear.f
 mtcars2 %>%
-  group_by(gear.f) %>%
+  group_by(cyl.f) %>%
   summarise(mean_mpg = mean(mpg)) %>%
   kable(digits = 3)
 ```
