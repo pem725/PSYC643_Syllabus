@@ -63,6 +63,8 @@ Categorical predictors are typically non-numerical.  In R, we refer to these pre
 
 #### Levels, Tables, and Contrasts
 
+You have two tools at your disposal to understand the $k$-levels of a factor: `levels()` and `table()`.  The `levels()` function returns the levels of a vector that has been stored as a factor (i.e., `as.factor()` or `factor()`.  The `table()` function returns the frequency of each level of a factor.  Additionally, the `contrasts()` function returns the contrasts used to code the levels of a factor.  We will use these functions to understand the levels of the factors we created from the `mtcars` dataset.
+
 ```{r CodingBasics}
 #| title: "Coding Basics"
 #| messages: false
@@ -116,6 +118,8 @@ mtcars2 %>%
   kable(digits = 3)
 
 ```
+
+Note how the `V` level of the `vs.f` factor is the reference level.  The coefficient for `vs.fS` is the difference between the mean of `mpg` for the `S` level of `vs.f` and the mean of `mpg` for the `V` level of `vs.f`.  The coefficient for `vs.fV` is actually the intercept.  So, the intercept is the reference level mean and the regression coefficient for each level of the factor is the **difference between** that reference mean.  Pretty easy, huh?
 
 #### Simple 3-level Factor
 
