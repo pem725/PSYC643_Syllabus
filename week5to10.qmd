@@ -1,5 +1,10 @@
 ---
 title: "Weeks 5-10"
+format: 
+  html:
+    toc: true
+    toc_depth: 7
+    toc_float: true
 ---
 
 ```{r LoadLibraries}
@@ -17,8 +22,6 @@ library(kableExtra)
 library(ggplot2)
 library(gtsummary)
 ```
-
-
 
 # Week 5
 
@@ -48,23 +51,19 @@ mtcars2 <- within(mtcars, {
 knitr::kable(str(mtcars2))
 ```
 
-
 ## Categorical Predictors
 
-This week (2/19) is our week to get cracking on categorical predictors. We'll start with a review of the basics, and then address two:
-- Dummy coding
-- Effects coding
+This week (2/19) is our week to get cracking on categorical predictors. We'll start with a review of the basics, and then address two: - Dummy coding - Effects coding
 
 Next week, we tackle contrast coding and polynomial coding.
 
 ### Some Basics
 
-Categorical predictors are typically non-numerical.  In R, we refer to these predictors as factors.  Factors are a type of variable that takes on a limited number of different values; each value is referred to as a level.  For example, the variable `vs` in the `mtcars` dataset is a factor with two levels: `V` and `S`.  The variable `am` in the `mtcars` dataset is a factor with two levels: `automatic` and `manual`.  I created factors from two other variables - gear and cyl - and gave them labels that are more meaningful than the numbers that they represent.  All of these variables contain categorical data and, as a result, need to be converted into numbers so we can use them in the General Linear Model.
-
+Categorical predictors are typically non-numerical. In R, we refer to these predictors as factors. Factors are a type of variable that takes on a limited number of different values; each value is referred to as a level. For example, the variable `vs` in the `mtcars` dataset is a factor with two levels: `V` and `S`. The variable `am` in the `mtcars` dataset is a factor with two levels: `automatic` and `manual`. I created factors from two other variables - gear and cyl - and gave them labels that are more meaningful than the numbers that they represent. All of these variables contain categorical data and, as a result, need to be converted into numbers so we can use them in the General Linear Model.
 
 #### Levels, Tables, and Contrasts
 
-You have two tools at your disposal to understand the $k$-levels of a factor: `levels()` and `table()`.  The `levels()` function returns the levels of a vector that has been stored as a factor (i.e., `as.factor()` or `factor()`.  The `table()` function returns the frequency of each level of a factor.  Additionally, the `contrasts()` function returns the contrasts used to code the levels of a factor.  We will use these functions to understand the levels of the factors we created from the `mtcars` dataset.
+You have two tools at your disposal to understand the $k$-levels of a factor: `levels()` and `table()`. The `levels()` function returns the levels of a vector that has been stored as a factor (i.e., `as.factor()` or `factor()`. The `table()` function returns the frequency of each level of a factor. Additionally, the `contrasts()` function returns the contrasts used to code the levels of a factor. We will use these functions to understand the levels of the factors we created from the `mtcars` dataset.
 
 ```{r CodingBasics}
 #| title: "Coding Basics"
@@ -85,17 +84,65 @@ contrasts(mtcars2$gear.f)
 contrasts(mtcars2$cyl.f)
 ```
 
+#### Setting Up Contrasts in R
 
-### Dummy Coding
+There are two ways to set up your contrasts in R. The first (GLOBAL) is to use the `options()` function. I use the term "GLOBAL" with this method because it creates a default contrast setting for all factors in your code for this project.  These options can be over-ridden with the second option but this method is handy to save you extra code in your project.  The second (LOCAL) is to use the `contrasts` argument in or before using the `lm()` function. The `options()` function sets the default contrasts for all factors in your R session; the `contrasts` argument within `lm()` is a more localized setting that can be altered with each model you run.  Each method is demonstrated below.
 
-R defaults to dummy coding so if you prefer this method, just leave the handling of factors to R.  **NOT RECOMMENDED**.  Usually, we want to use a different coding method but for now, we will keep to dummy codes or, as referred to in the R world - treatment contrasts.
+```{r SetContrastsGlobally}
+#| title: "Setting up your options in R"
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: false
+options(contrasts = c("contr.treatment", "contr.poly"))
+```
 
-#### One 2-level Factor
+::: {.callout-note title="Details for the `options()` function and the `contrasts` setting"}
+`options()` is a function in R that allows you to set global options for your R session.
 
-When we have a factor with two levels, we get one new variable.  This new variable is a binary variable that takes on the value of 0 or 1.  The 0 is the reference level and the 1 is the other level.  The reference level is the first level of the factor unless otherwise specified.  The new variable is a Dummy code and, as a result, gets interpreted as such.  Always know the method by which a factor is coded.  You cannot interpret your regression results without knowing this tidbit.  So, ask.  Here, we are using dummy coding.  
+`contrasts` is a setting in options for your entire R session.  If you set your contrasts here, those contrasts would be fixed (unless otherwise changed explicitly using the next method) for all factors.  Note that there are two contrasts that are set here: `contr.treatment` and `contr.poly`.  The `contr.treatment` contrast is used for unordered factors.  That is, factors that have levels without any hierarchy will use `contr.treatment` as the preferred contrasts option.  The second specified contrast (`contr.poly`) is used for ordered factors.  Thus, any factor that is listed as "ordered" will use polynomial contrasts.  We address polynomial contrasts shortly.  
+:::
 
-The example below has a factor `vs.f` that is used to predict vehicle fuel efficiency (mpg).  
 
+```{r SetContrastsLocally}
+#| title: "Setting up your options before using the lm() function"
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: false
+lm(mpg ~ gear.f + cyl.f, 
+   data = mtcars2,
+   contrasts = list(gear.f = "contr.treatment", cyl.f = "contr.treatment"))
+```
+
+::: {.callout-note title="Details for the `contrasts` argument in the `lm()` function"}
+
+The `contrasts` argument in the `lm()` function sets the contrasts for a specific factor in a specific model. Note here that we only specify ONE contrast for each factor to override any defaults set either explicitly (i.e., you issued the `options()` command as detailed above OR you accepted the default options in R.
+:::
+
+## Dummy (Treatment) Coding
+
+R defaults to dummy coding so if you prefer this method, just leave the handling of factors to R. **NOT RECOMMENDED**. Usually, we want to use a different coding method but for now, we will keep to dummy codes or, as referred to in the R world - treatment contrasts.
+
+```{r DummyCodeMatrix}
+#| title: "Dummy Code Matrix"
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+contr.treatment(2)
+contr.treatment(3)
+contr.treatment(4)
+contr.treatment(5)
+```
+
+### One 2-level Factor
+
+When we have a factor with two levels, we get one new variable. This new variable is a binary variable that takes on the value of 0 or 1. The 0 is the reference level and the 1 is the other level. The reference level is the first level of the factor unless otherwise specified. The new variable is a Dummy code and, as a result, gets interpreted as such. Always know the method by which a factor is coded. You cannot interpret your regression results without knowing this tidbit. So, ask. Here, we are using dummy coding.
+
+The example below has a factor `vs.f` that is used to predict vehicle fuel efficiency (mpg).
 
 ```{r DummyCoding2lvl}
 #| messages: false
@@ -124,14 +171,15 @@ mtcars2 %>%
 
 ```
 
-Note how the `V` level of the `vs.f` factor is the reference level.  The coefficient for `vs.fS` is the difference between the mean of `mpg` for the `S` level of `vs.f` and the mean of `mpg` for the `V` level of `vs.f`.  The coefficient for `vs.fV` is actually the intercept.  So, the intercept is the reference level mean and the regression coefficient for each level of the factor is the **difference between** that reference mean.  Pretty easy, huh?
+Note how the `V` level of the `vs.f` factor is the reference level. The coefficient for `vs.fS` is the difference between the mean of `mpg` for the `S` level of `vs.f` and the mean of `mpg` for the `V` level of `vs.f`. The coefficient for `vs.fV` is actually the intercept. So, the intercept is the reference level mean and the regression coefficient for each level of the factor is the **difference between** that reference mean. Pretty easy, huh?
 
-$$mpg = \beta_0 + \beta_1 * (vs.fS) + \epsilon = \hat{mgp} + \epsilon$$
-or, for our results:
+::: {.callout-note title="Intrepreting Unstandardized Coefficients - 2 Levels" collapse="show"}
+
+$$mpg = b_0 + b_1 * (vs.fS) + \epsilon = \hat{mgp} + \epsilon$$ or, for our results:
 
 $$\hat{mpg} = 16.62 + 7.94 * (vs.fS)$$
 
-and remember that `vs.fS` is our Dummy code.  Since V is coded as 0...
+and remember that `vs.fS` is our Dummy code. Since V is coded as 0...
 
 $$\hat{mpg}_{V} = 16.62 + 7.94 * (0) = 16.6$$
 
@@ -139,13 +187,14 @@ and since S is coded as 1...
 
 $$\hat{mpg}_{S} = 16.62 + 7.94 * (1) = 24.56$$
 
-So, the mean `mpg` for a vehicle with an S engine is 16.6 and the mean `mpg` for a vehicle with a V engine is 24.56.  The difference between the mean `mpg` for a vehicle with an S engine and a vehicle with a V engine is 7.94.  This is the coefficient for `vs.fS` in the regression equation.  The coefficient for `vs.fV` is the intercept.  Easy, right?
+So, the mean `mpg` for a vehicle with an S engine is 16.6 and the mean `mpg` for a vehicle with a V engine is 24.56. The difference between the mean `mpg` for a vehicle with an S engine and a vehicle with a V engine is 7.94. This is the coefficient for `vs.fS` in the regression equation. The coefficient for `vs.fV` is the intercept. Easy, right?
 
-#### One k-level Factor
+:::
 
-# RESUME HERE
 
-Two-level factors are easy.  When we have two levels ($k=2$), we get one ($k-1=2-1=1$) new variables.  But what about a factor with three levels ($k=3$)?  We get two ($k-1$) or $3-1=2$ new variables.  The first dummy variable is the second (or first) comparison level.  This variable is coded as `1` for all those observations in group 2. ZZZZ is the difference between means of the first and second levels of the factor.   of the second level compared to the base level (often the first, unless otherwise specified).  The second variable is the difference between the mean of the third level and the mean of the third level.  The third level is the reference level.
+### One k-level Factor
+
+Two-level factors are easy. When we have two levels ($k=2$), we get one ($k-1=2-1=1$) new variable. But what about a factor with three levels ($k=3$)? We get two ($k-1$) or $3-1=2$ new variables. The first dummy variable is the second (or first) comparison level. Let's see how this works when we have more than one level in a factor. The `gear.f` factor has three levels. We will use this factor to predict vehicle fuel efficiency (mpg).
 
 ```{r DummyCoding3lvl}
 #| messages: false
@@ -153,40 +202,58 @@ Two-level factors are easy.  When we have two levels ($k=2$), we get one ($k-1=2
 #| error: false
 #| warning: false
 
-# Base R way
-contrasts(mtcars2$gear.f)
-fit <- lm(mpg ~ gear.f, data = mtcars2)
-summary(fit)
-
 # Tidyverse way
 mtcars2 %>%
   dplyr::as_tibble() %>%
-  lm(mpg ~ gear.f, 
+  lm(mpg ~ cyl.f, 
      data = .,
-     contrasts = list(gear.f = contr.treatment)) %>%
+     contrasts = list(cyl.f = contr.treatment)) %>%
   summary()
 
 # means by gear.f
 mtcars2 %>%
-  group_by(gear.f) %>%
+  group_by(cyl.f) %>%
   summarise(mean_mpg = mean(mpg)) %>%
   kable(digits = 3)
 ```
 
-#### Two Factors (Main Effects)
+::: {.callout-note title="Intrepreting Unstandardized Coefficients - 3 Levels" collapse="show"}
+
+$$mpg = b_0 + b_1 * (cyl.f6) + b_2 * (cyl.f8) + \epsilon = \hat{mgp} + \epsilon$$ 
+
+
+or, for our results:
+
+$$\hat{mpg} = 26.66 - 6.92 * (cyl.f4) - 11.56 * (cyl.f6)$$
+
+and remember that `cyl.f6` and `cyl.f8` are our Dummy codes. For `cyl.f4`, we have both Dummy codes entered as as zeros so, the mean `mpg` for a vehicle with a 4 cylinder engine is 26.66:
+
+$$\hat{mpg}_{4} = 26.66 - 6.92 * (0) - 11.56 * (0) = 26.66$$ 
+
+and since 6 is coded as 1 for `cyl.f6` but 0 for `cyl.f8`, the mean `mpg` for a vehicle with a 6 cylinder engine is 19.74:
+
+$$\hat{mpg}_{6} = 26.66 - 6.92 * (1) - 11.56 * (0) = 19.74$$
+
+and finally, since 8 is coded as 0 for `cyl.f6` but 1 for `cyl.f8`, the mean `mpg` for a vehicle with an 8 cylinder engine is 23.88:
+
+$$\hat{mpg}_{4} = 26.66 - 6.92 * (0) - 11.56 * (1) = 15.10$$
+
+So, the mean `mpg` for a vehicle with a 4 cylinder engine is 26.66 ($b_0$), the mean `mpg` for a vehicle with a 6 cylinder engine is 19.74 ($b_0 + b_1$), and the mean `mpg` for a vehicle with an 8 cylinder engine is 26.66 ($b_0 + b_2$). The difference between the mean `mpg` for a vehicle with a 4 cylinder engine and a vehicle with a 6 cylinder engine is 6.92 ($b_1$). The difference between the mean `mpg` for a vehicle with a 4 cylinder engine and a vehicle with an 8 cylinder engine is -11.56 ($b_2$).  We only test those differences in our linear model here.  For other comparisons, we would need to use a different contrast coding scheme.
+:::
+
+### Two Factors (Main Effects)
 
 ```{r Dummy2FactorsMainEffects}
 #| messages: false
 #| echo: true
 #| error: false
 #| warning: false
-table(mtcars2$vs.f, mtcars2$cyl.f)
 
 mtcars2 %>%
   dplyr::as_tibble() %>%
   lm(mpg ~ vs.f + cyl.f, 
      data = .,
-     contrasts = list(vs.f = contr.treatment, gear.f = contr.treatment)) %>%
+     contrasts = list(vs.f = contr.treatment, cyl.f = contr.treatment)) %>%
   summary()
 
 # means by vs.f and gear.f
@@ -196,15 +263,30 @@ mtcars2 %>%
   kable(digits = 3)
 ```
 
+::: {.callout-note title="Intrepreting Unstandardized Coefficients - 2 Factors" collapse="show"}
 
+$$mpg = b_0 + b_1 * (vs.fS) + b_2 * (cyl.f6) + b_3 * (cyl.f8) + \epsilon = \hat{mgp} + \epsilon$$
 
-#### Two Factors (Interaction)
+or, for our results:
+
+$$\hat{mpg} = 27.29 - .69 * (vs.fS) - 7.15 * (cyl.fc) - 12.19 * (cyl.f8)$$
+
+and remember that `vs.fS`, `cyl.f6`, and `cyl.f8` are our Dummy codes. For `vs.fS`, we have both Dummy codes entered as as zeros so, the mean `mpg` for a vehicle with a V-shaped engine is 27.29:
+
+$$\hat{mpg}_{S, cyl.f4} = 27.29 - .69 * (0) - 7.15 * (0) - 12.19 * (0) = 27.29$$
+But lo and behold! that NOT the same as the mean `mpg` for a vehicle with a V-shaped engine and a 4 cylinder engine (26.00).  Why?  `vs.f` and `cyl.f` are confounded.  We can't interpret the main effect of `vs.f` without considering the main effect of `cyl.f`.  Let's look a little deeper into this dummy coding scheme with a more complicated model - a full factorial model.
+:::
+
+### Two Factors (Interaction)
 
 ```{r Dummy2FactorsFullFactorial}
 #| messages: false
 #| echo: true
 #| error: false
 #| warning: false
+
+kable(table(mtcars2$vs.f, mtcars2$cyl.f))
+
 mtcars2 %>%
   dplyr::as_tibble() %>%
   lm(mpg ~ vs.f * cyl.f, 
@@ -219,14 +301,19 @@ mtcars2 %>%
   kable(digits = 3)
 ```
 
+### Dummy Coding Summary
 
 
-## Effects Coding
+| Coding | Codes | $b_0$ | $b$ |
+|--------|-------|-------|-----|
+| Dummy | $0 | 1$ | $\bar{X}_{ref.Grp}$ | $\Delta_{Grp, ref.Grp}$ |
+: Coding Comparisons
 
-Effects coding is a bit more complicated.  The base comparison level of the factor is coded as $-1$; the focal level for each "new variable" is coded with a 1.  Recall that the same coding scheme exists for dummy coding but with effects coding, the LAST level is the default base comparison level and is coded with a $-1$ instead of a $0$.  The big deal about effects codes - at least compared to dummy coding - is that effects codes are centered AND orthogonal (kinda).  We will discuss these properties in a bit.  
+## Effects (Sum) Coding
+
+Effects coding is a bit more complicated. The base comparison level of the factor is coded as $-1$; the focal level for each "new variable" is coded with a 1. Recall that the same coding scheme exists for dummy coding but with effects coding, the LAST level is the default base comparison level and is coded with a $-1$ instead of a $0$. The big deal about effects codes - at least compared to dummy coding - is that effects codes are centered AND orthogonal (kinda). We will discuss these properties in a bit.
 
 ### One Factor with 2 Levels
-
 
 ```{r EffCoding2lvl}
 #| messages: false
@@ -257,6 +344,34 @@ mtcars2 %>%
 
 ```
 
+::: {.callout-note title="Intrepreting Unstandardized Coefficients - 1 Factor" collapse="show"}
+
+$$mpg = b_0 + b_1 * (vs.fS) + \epsilon = \hat{mgp} + \epsilon$$
+
+or, for our results:
+
+$$\hat{mpg} = 20.59 - 3.97 * (vs.fS)$$
+
+and remember that `vs.fS` is the code representing the `S` level in our `vs.f` factor and we coded that as a `1` and the `V` level as `-1`. So, the mean `mpg` for a vehicle with a V-shaped engine is:
+
+$$\hat{mpg}_{S} = 20.59 - 3.97 * (1) = 16.62$$
+
+and the mean `mpg` for a vehicle with a V-shaped engine is:
+
+$$\hat{mpg}_{V} = 20.59 - 3.97 * (-1) = 24.56$$
+
+One other tidbit before I leave this little callout box, we have another detail that is worth noting - the grand mean.  The grand mean is the mean of means.  Thus, we can compute the grand mean for these two levels of `vs.f` as:
+
+$$\bar{X}_{vs.fS} = 16.62$$
+$$\bar{X}_{vs.fV} = 24.56$$
+$$\bar{\bar{X}}_{vs.f} = \frac{16.62 + 24.56}{2} = 20.59$$
+Notice something cool?  The intercept in our bivariate model above is the grand mean of the factor.
+
+$$b_0 = \bar{\bar{X}}_{vs.f} = 20.59$$
+:::
+
+Let us venture forth into a more complicated model - a model with a factor with more than 2 levels.
+
 ### One k-level Factor
 
 ```{r EffCoding3lvl}
@@ -284,7 +399,34 @@ mtcars2 %>%
   summarise(mean_mpg = mean(mpg)) %>%
   summarise(grandMean_mpg = mean(mean_mpg)) %>%
   kable(digits = 3)
+
+contrasts(mtcars2$cyl.f) <- contr.sum(3)
+contrasts(mtcars2$cyl.f)
 ```
+
+::: {.callout-note title="Intrepreting Unstandardized Coefficients - 3 levels" collapse="show"}
+
+$$mpg = b_0 + b_1 * (cyl.f1) + b_2 * (cyl.f2) + \epsilon = \hat{mpg} + \epsilon$$
+
+WAIT!  What happened to our handy labels?  They are gone.  Once we specify a new contrast coding scheme, the useful labels go away.  We need to remember HOW we coded the factor and what the codes represent.  If you get stuck, always go back to the `contrasts()` function to reveal how things were coded.  We have to rely on the coefficients to tell us which level of the factor is being compared to the grand mean.  Our results:
+
+
+
+$$\hat{mpg} = 20.50 + 6.16 * (cyl.f1) - 0.76 * (cyl.f2)$$
+
+So, the mean `mpg` for a vehicle with 4 cylinders is:
+
+$$\hat{mpg}_{4} = 20.50 + 6.16 * (1) - 0.76 * (0) = 26.66$$
+
+and the mean `mpg` for a vehicle with 6 cylinders is:
+
+$$\hat{mpg}_{6} = 20.50 + 6.16 * (0) - 0.76 * (1) = 19.74$$
+
+and the mean `mpg` for a vehicle with 8 cylinders is:
+
+$$\hat{mpg}_{8} = 20.50 + 6.16 * (-1) - 0.76 * (-1) = 20.50 - 6.16 + 0.76 = 15.10$$
+:::
+
 
 ### Two Factors (Main Effects)
 
@@ -315,6 +457,13 @@ mtcars2 %>%
   kable(digits = 3)
 ```
 
+::: {.callout-note title="Intrepreting Unstandardized Coefficients - 2 Factors" collapse="show"}
+
+$$mpg = b_0 + b_1 * (vs.f1) + b_2 * (cyl.f1) + \epsilon = \hat{mpg} + \epsilon$$
+
+
+
+
 ### Two Factors (Interaction)
 
 ```{r Eff2FactorsFullFactorial}
@@ -336,6 +485,15 @@ mtcars2 %>%
   summarise(mean_mpg = mean(mpg)) %>%
   kable(digits = 3)
 ```
+
+### Effects (Sum) Coding Summary
+
+
+| Coding | Codes | $b_0$ | $b$ |
+|--------|-------|-------|-----|
+| Dummy | $0 \vert 1$ | Base Mean ($\bar{X}_{ref.Grp}$) | $\Delta_{Grp, ref.Grp}$ |
+| Effects | $-1 | 1$ | Grand Mean ($\bar{\bar{X}}_{k}$) | $\Delta_{k, \bar{\bar{X}}_k}$ |
+: Coding Comparisons
 
 
 
@@ -369,10 +527,7 @@ lm4 <- lm(mpg ~ cyl.f, data = mtcars2) %>%
 
 ```
 
-
-
 ### Effects Coding
-
 
 # Week 7
 
@@ -403,4 +558,3 @@ lm4 <- lm(mpg ~ cyl.f, data = mtcars2) %>%
 ### Interactions with Polynomial Predictors
 
 ### Interactions with Higher-Order Predictors
-
