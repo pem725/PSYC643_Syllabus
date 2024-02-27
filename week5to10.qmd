@@ -511,7 +511,7 @@ mtcars2 %>%
 | Coding | Codes | $b_0$ | $b$ |
 |--------|-------|-------|-----|
 | Dummy | $0 \vert 1$ | Base Mean ($\bar{X}_{ref.Grp}$) | $\Delta_{Grp, ref.Grp}$ |
-| Effects | $-1 | 1$ | Grand Mean ($\bar{\bar{X}}_{k}$) | $\Delta_{k, \bar{\bar{X}}_k}$ |
+| UW Effects | $-1 | 1$ | Grand Mean ($\bar{\bar{X}}_{k}$) | $\Delta_{k, \bar{\bar{X}}_k}$ |
 : Coding Comparisons
 
 
@@ -521,10 +521,8 @@ mtcars2 %>%
 #| echo: true
 #| error: false
 #| warning: false
-
-
-
-
+#| eval: false
+#| include: false
 
 lm(mpg ~ 1, data = mtcars2) %>%
   tbl_regression(intercept = TRUE, add_estimate_to_reference_rows=TRUE) %>% 
@@ -546,15 +544,282 @@ lm4 <- lm(mpg ~ cyl.f, data = mtcars2) %>%
 
 ```
 
-### Effects Coding
+### Effects Coding (BETTER)
+
+Please read [this article](https://journal.r-project.org/articles/RJ-2017-017/RJ-2017-017.pdf).
 
 # Week 7
 
 ## Categorical Predictors (cont.)
 
+So far, we have two coding methods for categorical predictors: dummy coding and effects coding.  There are others, but these are the most common.  Dummy coding is the most common, but it is not the best.  Effects coding is better, but it is not the best.  The best is something called contrast coding.  Contrast coding is a generalization of dummy and effects coding.  It is also a generalization of polynomial coding, which is a special case of contrast coding.  We will cover contrast coding and polynomial coding in this section.
+
 ### Contrast Coding
 
+Just as it is with the previous coding schemes, contrast coding can be done with relative ease; you just need to know the keywords and how R labels things differently than how we might label them in social science.  Here goes...
+
+#### One 2-level Factor
+
+```{r contrastcoding2level}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ vs.f, 
+     data = .,
+     contrasts = list(vs.f = contr.helmert)) %>%
+  summary()
+
+# means by vs.f
+mtcars2 %>%
+  group_by(vs.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
+# grand mean
+mtcars2 %>%
+  group_by(vs.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+
+```
+
+#### One k-level Factor
+
+```{r contrastcodingKlevel}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ gear.f, 
+     data = .,
+     contrasts = list(gear.f = contr.helmert)) %>%
+  summary()
+
+# means by gear.f
+mtcars2 %>%
+  group_by(gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
+# grand mean
+mtcars2 %>%
+  group_by(gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+
+```
+
+#### Two Factors (Main Effects)
+
+```{r contrastcodingME}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ vs.f + cyl.f, 
+     data = .,
+     contrasts = list(vs.f = contr.helmert, cyl.f = contr.helmert)) %>%
+  summary()
+
+# means by vs.f and gear.f
+mtcars2 %>%
+  group_by(vs.f, cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
+# grand mean
+mtcars2 %>%
+  group_by(vs.f, cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+
+```
+
+#### Two Factors (Interaction)
+
+```{r contrastcodingInt}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ vs.f * cyl.f, 
+     data = .,
+     contrasts = list(vs.f = contr.helmert, cyl.f = contr.helmert)) %>%
+  summary()
+
+# means by vs.f and gear.f
+mtcars2 %>%
+  group_by(vs.f, cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
+# grand mean
+mtcars2 %>%
+  group_by(vs.f, cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+
+```
+
+
 ### Polynomial Coding
+
+Finally, we come to polynomial coding.  What is this beast of a coding scheme?  Polynomial coding is a special case of contrast coding.  It is used when you have a categorical predictor with **more than two levels** and you want to test for linear, quadratic, cubic, etc. trends.  It is a bit more complicated than the other coding schemes, but it is not too bad.  Here goes...
+
+
+```{r polyKlevels1}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ cyl.f, 
+     data = .,
+     contrasts = list(cyl.f = contr.poly)) %>%
+  summary()
+
+# means by cyl.f
+mtcars2 %>%
+  group_by(cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
+# grand mean
+mtcars2 %>%
+  group_by(cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+
+```
+
+```{r polyKlevels2}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ gear.f, 
+     data = .,
+     contrasts = list(gear.f = contr.poly)) %>%
+  summary()
+
+# means by gear.f
+mtcars2 %>%
+  group_by(gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+  
+# grand mean
+mtcars2 %>%
+  group_by(gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+
+```
+
+```{r polyME}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ cyl.f + gear.f, 
+     data = .,
+     contrasts = list(cyl.f = contr.poly, gear.f = contr.poly)) %>%
+  summary()
+
+# means by vs.f and cyl.f
+mtcars2 %>%
+  group_by(cyl.f, gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
+# grand mean
+mtcars2 %>%
+  group_by(cyl.f, gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+```
+
+```{r polyInt}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ cyl.f * gear.f, 
+     data = .,
+     contrasts = list(cyl.f = contr.poly, gear.f = contr.poly)) %>%
+  summary()
+
+# means by vs.f and cyl.f
+mtcars2 %>%
+  group_by(cyl.f, gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
+# grand mean
+mtcars2 %>%
+  group_by(cyl.f, gear.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+```
+
+
+
+
 
 # Week 8 - SPRING BREAK (No Class)
 
