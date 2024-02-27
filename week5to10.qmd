@@ -544,6 +544,7 @@ lm4 <- lm(mpg ~ cyl.f, data = mtcars2) %>%
 
 ```
 
+
 ### Effects Coding (BETTER)
 
 Please read [this article](https://journal.r-project.org/articles/RJ-2017-017/RJ-2017-017.pdf).
