@@ -467,7 +467,10 @@ $$\hat{mpg} = 20.50 + 0.34 * (vs.f1) + 6.45 * (cyl.f1) - 0.71 * (cyl.f2)$$
 
 So, the mean `mpg` for a vehicle with 4 cylinders and a V engine is:
 
-$$\hat{mpg}_{4V} = 20.50 + 0.34 * (1) + 6.45 * (1) - 0.71 * (0) \ne 27.29$$
+$$\hat{mpg}_{4V} = 20.50 + 0.34 * (1) + 6.45 * (1) - 0.71 * (0) = 27.29 \ne 26.0$$
+
+That value can be obtained by doing something easy.  First, note that the mean `mpg` for a vehicle with 4 cylinders and a V engine is 26.00.  Note also that the design is unbalanced.  What should have been 6 cells was really only 5 means because one cell was empty (i.e., no observations included an S car with 8 cylinders).  Why does this matter?  The grand mean is taken as the mean of means.  If one cell has a mean of zero, then the grand mean will be pulled down.
+
 
 and the mean `mpg` for a vehicle with 4 cylinders and an inline engine is:
 
