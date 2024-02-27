@@ -467,7 +467,7 @@ $$\hat{mpg} = 20.50 + 0.34 * (vs.f1) + 6.45 * (cyl.f1) - 0.71 * (cyl.f2)$$
 
 So, the mean `mpg` for a vehicle with 4 cylinders and a V engine is:
 
-$$\hat{mpg}_{4V} = 20.50 + 0.34 * (1) + 6.45 * (1) - 0.71 * (0) = 27.29$$
+$$\hat{mpg}_{4V} = 20.50 + 0.34 * (1) + 6.45 * (1) - 0.71 * (0) \ne 27.29$$
 
 and the mean `mpg` for a vehicle with 4 cylinders and an inline engine is:
 
