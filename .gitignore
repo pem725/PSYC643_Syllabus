@@ -7,3 +7,8 @@ README_files/
 _book/**
 _site/**
 renv/
+tmp
+tmp/**
+*_files/**
+*.html
+*.pdf
