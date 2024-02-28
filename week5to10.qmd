@@ -555,11 +555,11 @@ Please read [this article](https://journal.r-project.org/articles/RJ-2017-017/RJ
 
 So far, we have two coding methods for categorical predictors: dummy coding and effects coding.  There are others, but these are the most common.  Dummy coding is the most common, but it is not the best.  Effects coding is better, but it is not the best.  The best is something called contrast coding.  Contrast coding is a generalization of dummy and effects coding.  It is also a generalization of polynomial coding, which is a special case of contrast coding.  We will cover contrast coding and polynomial coding in this section.
 
-### Contrast Coding
+## Contrast Coding
 
 Just as it is with the previous coding schemes, contrast coding can be done with relative ease; you just need to know the keywords and how R labels things differently than how we might label them in social science.  Here goes...
 
-#### One 2-level Factor
+### One 2-level Factor
 
 ```{r contrastcoding2level}
 #| messages: false
@@ -591,7 +591,7 @@ mtcars2 %>%
 
 ```
 
-#### One k-level Factor
+### One k-level Factor
 
 ```{r contrastcodingKlevel}
 #| messages: false
@@ -624,7 +624,7 @@ mtcars2 %>%
 
 ```
 
-#### Two Factors (Main Effects)
+### Two Factors (Main Effects)
 
 ```{r contrastcodingME}
 #| messages: false
@@ -657,7 +657,7 @@ mtcars2 %>%
 
 ```
 
-#### Two Factors (Interaction)
+### Two Factors (Interaction)
 
 ```{r contrastcodingInt}
 #| messages: false
@@ -691,10 +691,11 @@ mtcars2 %>%
 ```
 
 
-### Polynomial Coding
+## Polynomial Coding
 
 Finally, we come to polynomial coding.  What is this beast of a coding scheme?  Polynomial coding is a special case of contrast coding.  It is used when you have a categorical predictor with **more than two levels** and you want to test for linear, quadratic, cubic, etc. trends.  It is a bit more complicated than the other coding schemes, but it is not too bad.  Here goes...
 
+### One k-level Factor
 
 ```{r polyKlevels1}
 #| messages: false
@@ -703,6 +704,8 @@ Finally, we come to polynomial coding.  What is this beast of a coding scheme?  
 #| warning: false
 #| eval: true
 #| include: true
+
+round(contr.poly(3),3)
 
 # Tidyverse way
 mtcars2 %>%
@@ -756,7 +759,18 @@ mtcars2 %>%
   summarise(grandMean_mpg = mean(mean_mpg)) %>%
   kable(digits = 3)
 
+# predicted values
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ gear.f, 
+     data = .,
+     contrasts = list(gear.f = contr.poly)) %>%
+  predict(newdata = data.frame(gear.f = as.factor(levels(mtcars2$gear.f)))) %>%
+  knitr::kable(digits = 3)
+
 ```
+
+### Two Factors (Main Effects)
 
 ```{r polyME}
 #| messages: false
@@ -786,7 +800,20 @@ mtcars2 %>%
   summarise(mean_mpg = mean(mpg)) %>%
   summarise(grandMean_mpg = mean(mean_mpg)) %>%
   kable(digits = 3)
+
+# predicted values
+mtcars2 %>% 
+  dplyr::as_tibble() %>%
+  lm(mpg ~ cyl.f + gear.f, 
+     data = .,
+     contrasts = list(cyl.f = contr.poly, gear.f = contr.poly)) %>%
+  predict(newdata = expand.grid(cyl.f = as.factor(levels(mtcars2$cyl.f)), gear.f = as.factor(levels(mtcars2$gear.f)))) %>%
+  knitr::kable(digits = 3)
+
+
 ```
+
+### Two Factors (Interaction)
 
 ```{r polyInt}
 #| messages: false
@@ -816,6 +843,16 @@ mtcars2 %>%
   summarise(mean_mpg = mean(mpg)) %>%
   summarise(grandMean_mpg = mean(mean_mpg)) %>%
   kable(digits = 3)
+
+# predicted values
+mtcars2 %>% 
+  dplyr::as_tibble() %>%
+  lm(mpg ~ cyl.f * gear.f, 
+     data = .,
+     contrasts = list(cyl.f = contr.poly, gear.f = contr.poly)) %>%
+  predict(newdata = expand.grid(cyl.f = as.factor(levels(mtcars2$cyl.f)), gear.f = as.factor(levels(mtcars2$gear.f))),type="terms") %>%
+  knitr::kable(digits = 3)
+
 ```
 
 
