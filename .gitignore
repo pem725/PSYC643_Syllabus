@@ -9,3 +9,8 @@ _site/**
 renv/
 *.html
 *_files/**
+tmp
+tmp/**
+*_files/**
+*.html
+*.pdf
