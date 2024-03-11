@@ -856,14 +856,43 @@ mtcars2 %>%
 ```
 
 
-
-
-
 # Week 8 - SPRING BREAK (No Class)
 
 # Week 9
 
 ## Interactions (aka Moderation)
+
+```{r}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+# Tidyverse way
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ wt + cyl.f + wt*cyl.f, 
+     data = .) %>%
+  summary()
+
+# means by wt and hp
+mtcars2 %>%
+  group_by(wt, cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  kable(digits = 3)
+
+# grand mean
+mtcars2 %>%
+  group_by(wt, cyl.f) %>%
+  summarise(mean_mpg = mean(mpg)) %>%
+  summarise(grandMean_mpg = mean(mean_mpg)) %>%
+  kable(digits = 3)
+
+```
+
+
 
 ### Simple Interactions
 
