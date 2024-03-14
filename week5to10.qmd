@@ -900,20 +900,56 @@ mtcars2 %>%
 
 ```
 
-
-
-### Simple Interactions
-
-### Complex Interactions
-
 # Week 10
 
 ## Moderation (cont.)
 
-### Interactions with Categorical Predictors
+```{r ModCont}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
 
-### Interactions with Multiple Predictors
+library(dplyr)
+library(gtsummary)
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ wt, 
+     data = .) %>%
+  summary()
 
-### Interactions with Polynomial Predictors
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ cyl.f, 
+     data = .) %>%
+  summary()
 
-### Interactions with Higher-Order Predictors
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ wt + cyl.f, 
+     data = .) %>%
+  summary()
+
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  lm(mpg ~ wt + cyl.f + wt*cyl.f, 
+     data = .) %>%
+  summary()
+
+
+```
+
+## Plotting Moderation
+
+```{r plotMod}
+#| messages: false
+#| echo: true
+#| error: false
+#| warning: false
+#| eval: true
+#| include: true
+
+
+```
