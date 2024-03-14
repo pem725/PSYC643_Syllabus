@@ -871,10 +871,18 @@ mtcars2 %>%
 #| include: true
 
 # Tidyverse way
+
+mtcars2$wt.c <- mtcars2$wt - mean(mtcars2$wt)
+mean(mtcars2$wt.c)
+sd(mtcars2$wt.c)
+mean(mtcars2$wt)
+sd(mtcars2$wt)
+
 mtcars2 %>%
   dplyr::as_tibble() %>%
-  lm(mpg ~ wt + cyl.f + wt*cyl.f, 
-     data = .) %>%
+  lm(mpg ~ wt.c*am.f, 
+     data = .,
+     contrasts = list(am.f = contr.sum)) %>%
   summary()
 
 # means by wt and hp
