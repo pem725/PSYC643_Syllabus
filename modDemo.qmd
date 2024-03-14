@@ -1,0 +1,58 @@
+---
+title: "Moderation Demonstration"
+server: shiny
+---
+
+```{r libs}
+#| echo: false
+#| eval: true
+#| include: false
+#| message: false
+#| warning: false
+#| error: false
+#| results: hide
+
+library(shiny)
+library(ggplot2)
+library(stdmod)
+```
+
+
+
+```{r}
+#| panel: sidebar
+checkboxGroupInput("sigEffs", "Significant Effects", 
+                   list("Intercept"="b0",
+                     "Main Effect (x --> y)"="b1",
+                     "Moderator Main Effect" = "b2",
+                     "Interaction" = "b3"))
+```
+
+```{r}
+#| panel: fill
+#plotOutput("modPlot")
+#textOutput("txt")
+plotOutput("modPlot")
+```
+
+```{r}
+#| context: server
+output$txt <- renderText({
+  paste(input$sigEffs)
+})
+
+output$modPlot <- renderPlot({
+  dat <- data.frame(x = rnorm(300), m = gl(2, 150))
+  dat$y.hat <- 6*1*("b0" %in% input$sigEffs) + 
+    3*("b1" %in% input$sigEffs)*dat$x + 
+    3*("b2" %in% input$sigEffs)*as.numeric(as.character(dat$m)) + 
+    3*("b3" %in% input$sigEffs)*dat$x*as.numeric(as.character(dat$m))
+  dat$y <- dat$y.hat + rnorm(300, 0, 2*sd(dat$y.hat))
+  
+  lm.fit <- lm(y ~ x*m, data = dat)
+  stdmod::plotmod(lm.fit, x = "x", w = "m")
+  
+})
+
+
+```
