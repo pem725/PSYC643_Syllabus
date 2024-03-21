@@ -943,13 +943,4 @@ mtcars2 %>%
 
 ## Plotting Moderation
 
-```{r plotMod}
-#| messages: false
-#| echo: true
-#| error: false
-#| warning: false
-#| eval: true
-#| include: true
-
-
-```
+Please run my modDemo.qmd file to see how moderation may be plotted.
