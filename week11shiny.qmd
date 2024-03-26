@@ -1,0 +1,112 @@
+---
+title: "Week 11 - Mediation Demonstration"
+server: shiny
+---
+
+Today, we introduce mediation analysis.  The purpose of these models is to differentiate between direct and indirect effects of a predictor on an outcome.  Lessons learned here will enable you to understand more complex models in the future.  I begin with some specifics; please refer to [this page](https://library.virginia.edu/data/articles/introduction-to-mediation-analysis) as a reference.
+
+## Introduction to Mediation
+
+Mediation analysis is a statistical technique used to unpack direct and indirect effects.  The methods used here are an amalgam of techniques developed over the past 50 years and, due to increases in computational capacity, the logic remains but the methods do not.  Here, I talk about the original ideas and advance quite rapidly through the latest tools.  The tools change but the ideas remain the same.  Focus on the ideas.
+
+```{mermaid}
+graph LR;
+  A[Main Cause] -->|c| B[Outcome];
+  X[Main Cause] -->|c'| Y[Outcome];
+  X -->|a| M[Mediator];
+  M -->|b| Y;
+
+```
+
+In the above figure(s), we show that the main cause (X) has a direct effect on the outcome (Y).  However, the main cause also has an indirect effect on the outcome through the mediator (M).  The direct effect is denoted by c, the indirect effect by a*b, and the residualized effect by c'.  The residualized effect is the effect of the main cause on the outcome after accounting for the mediator.  The indirect effect is the effect of the main cause on the outcome through the mediator.  The direct effect is the effect of the main cause on the outcome that is not mediated by the mediator.
+
+## Shiny Demonstration
+
+
+Here is a shiny demonstration of mediation analysis. The user can select which effects to include in the model.
+
+# NOT WORKING YET
+
+```{r libs}
+#| echo: false
+#| eval: true
+#| include: false
+#| message: false
+#| warning: false
+#| error: false
+
+library(ggplot2)
+library(mediation)
+library(broom)
+
+```
+
+```{r}
+#| panel: sidebar
+#| title: "Mediation Analysis"
+
+checkboxInput("a", "Direct Effect\n(x --> M)", value = FALSE)
+checkboxInput("b", "Direct Mediator Effect\n(M --> Y)", value = FALSE)
+checkboxInput("c", "Main Effect\n(x --> Y)", value = FALSE)
+sliderInput("N", "Sample Size", min = 50, max = 1000, value = 300, step = 50)
+```
+
+```{r}
+#| panel: fill
+#| title: "Mediation Analysis"
+
+#plotOutput("modPlot")
+tableOutput("modSum")
+
+```
+
+```{r}
+#| context: server
+#| title: "Mediation Analysis"
+
+
+dat <- reactive({
+  N <- input$N
+  x <- rnorm(N, 1, 3)
+  m <- 3*(input$a)*x + rnorm(N, 0, 3)
+  y <- 3*(input$c)*x + 3*(input$b)*m + rnorm(N, 0, 3)
+  data.frame(x = x, m = m, y = y)
+})
+
+out <- reactive({
+  m.fit <- lm(m ~ x, data = dat())
+  y.fit <- lm(y ~ x + m, data = dat())
+  res <- mediation::mediate(m.fit, y.fit, treat = "x", mediator = "m", boot = FALSE)
+})
+
+output$modSum <- renderTable({
+  broom::tidy(out()$res)
+})
+
+#### RC - fix this stuff above and below.  Bootstrap stuff needs to be added. #####
+
+#output$modPlot <- renderPlot({
+#    mediation::plot(res)  
+#})
+
+```
+
+
+```{r}
+input <- list(sigEffs = c("a", "b", "c"), boot = TRUE)
+
+  x <- rnorm(1000, 1, 3)
+  m <- 3*("a" %in% input$sigEffs)*x + rnorm(1000, 0, 3)
+  y <- 3*("c" %in% input$sigEffs)*x + 3*("b" %in% input$sigEffs)*m + rnorm(1000, 0, 3)
+  
+  dat <- data.frame(x = x, m = m, y = y)
+  m.fit <- lm(m ~ x, data = dat)
+  y.fit <- lm(y ~ x + m, data = dat)
+  res <- mediation::mediate(m.fit, y.fit, treat = "x", mediator = "m", boot = input$boot)
+
+  tidy(res)
+
+
+```
+
+
