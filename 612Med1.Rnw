@@ -1,0 +1,436 @@
+%%
+%% lec6.tex
+%% 
+%% Made by Patrick E. McKnight
+%% Login   <pem@copernicus>
+%% 
+%% Started on  Fri Mar 14 06:40:26 2008 Patrick E. McKnight
+%% Last update Mon Mar  1 18:23:13 2010 Patrick McKnight
+%%
+\documentclass[12pt]{article}
+% \usepackage{savetrees}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shadows,arrows,fit,backgrounds,calc}
+\usepackage{latexsym}
+\usepackage[text={7in,9.5in},centering]{geometry}
+\usepackage{graphicx}
+\usepackage{mdwlist}
+%\usepackage[usenames]{color}
+%\usepackage{wrapfig}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[thinlines]{easytable}
+\usepackage{longtable}
+\usepackage{float}
+%\usepackage{pdfpages}
+\title{PSYC 612, SPRING 2012\\Introduction to Mediation}
+\date{Lecture Week: 2/14/2012}
+
+\newcommand{\squishlist}{
+   \begin{list}{$\bullet$}
+    { \setlength{\itemsep}{0pt}      \setlength{\parsep}{3pt}
+      \setlength{\topsep}{3pt}       \setlength{\partopsep}{0pt}
+      \setlength{\leftmargin}{1.5em} \setlength{\labelwidth}{1em}
+      \setlength{\labelsep}{0.5em} } }
+
+\newcommand{\squishlisttwo}{
+   \begin{list}{$\rhd$}
+    { \setlength{\itemsep}{0pt}    \setlength{\parsep}{0pt}
+      \setlength{\topsep}{0pt}     \setlength{\partopsep}{0pt}
+      \setlength{\leftmargin}{2em} \setlength{\labelwidth}{1.5em}
+      \setlength{\labelsep}{0.5em} } }
+
+\newcommand{\squishlistthree}{
+   \begin{list}{$-$}
+    { \setlength{\itemsep}{0pt}    \setlength{\parsep}{0pt}
+      \setlength{\topsep}{0pt}     \setlength{\partopsep}{0pt}
+      \setlength{\leftmargin}{2.5em} \setlength{\labelwidth}{2em}
+      \setlength{\labelsep}{0.5em} } }
+
+\newcommand{\squishend}{
+    \end{list}  }
+
+\newcommand{\callout}[1]{
+ \begin{center}
+ \begin{tikzpicture}[thick]
+ \tikzstyle{txt} = [fill=yellow!10,shape=rectangle,text width=5in]
+ \tikzstyle{bgy} =  [fill=yellow!10,thick,draw=black,rounded corners=2mm]
+ \node[txt] (qu) at (0,0)  {#1} ;
+ \begin{pgfonlayer}{background}
+ \node[bgy] (background) [fit = (qu)] {};
+ \end{pgfonlayer}
+ \end{tikzpicture}
+ \end{center}
+}
+
+\newcommand{\eqncallout}[1]{
+ \begin{center}
+ \begin{tikzpicture}[thick]
+ \tikzstyle{eqn} = [fill=blue!10,shape=rectangle]
+ \tikzstyle{bgb} =  [fill=blue!10,thick,draw=black,rounded corners=2mm]
+ \node[eqn] (qu) at (0,0)  {#1} ;
+ \begin{pgfonlayer}{background}
+ \node[bgb] (background) [fit = (qu)] {};
+ \end{pgfonlayer}
+ \end{tikzpicture}
+ \end{center}
+}
+
+  
+  
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+\tableofcontents
+
+\hrulefill
+
+\section{Preliminary Questions}
+
+\squishlist
+\item How are the modules going?
+\item Did you read the Iacobucci text?
+\squishend
+
+\section{Part I: Preview of Mediation and Moderation  (30 minutes; 2 minute break)}
+
+\hrulefill
+\subsection{Purpose:} Provide you with the necessary background
+information about the topics mediation and moderation
+
+\subsection{Objectives:}
+
+\begin{enumerate*}
+\item Introduce mediation
+\item Introduce moderation and contrast it with mediation
+\end{enumerate*}
+\hrulefill
+
+\subsection{Mediation}
+
+Mediation is best explained graphically. We begin with a simple path
+diagram - note the similarity to my advance organizer?
+
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+%% Bivariate model
+\begin{center}
+\begin{tikzpicture}[thick]
+\tikzstyle{mv} = [draw,fill=white,shape=rectangle]
+\tikzstyle{lv} = [draw,fill=white,shape=circle]
+\tikzstyle{bgb} = [fill=blue!10,thick,draw=black,rounded corners=2mm]
+\tikzstyle{bgy} =  [fill=yellow!10,thick,draw=black,rounded corners=2mm]
+\node[mv] (A) at (0,0)  {A} ;
+\node[mv] (C) at (5,0)  {C} ;
+\draw [->] (A) -- (C)  node [midway,below,draw=none] {c} ;
+\begin{pgfonlayer}{background}
+\node[bgb] (background) [fit = (A) (C)] {};
+\end{pgfonlayer}
+\end{tikzpicture}
+\end{center}
+
+That path model depicts a single manifest variable $A$ predicting a
+single manifest variable $C$ - a bivariate relationship often
+expressed as a correlation or a bivariate regression $c$.  Causal
+inference gets a bit more complicated when we introduce another
+variable into the fold.  Typically, we just include that additional
+variable as another predictor of our oucome $c$ as depicted here:
+
+
+%% Two predictor model
+\begin{center}
+\begin{tikzpicture}[thick]
+\tikzstyle{mv} = [draw,fill=white,shape=rectangle]
+\tikzstyle{lv} = [draw,fill=white,shape=circle]
+\tikzstyle{bgb} = [fill=blue!10,thick,draw=black,rounded corners=2mm]
+\tikzstyle{bgy} =  [fill=yellow!10,thick,draw=black,rounded corners=2mm]
+\coordinate (bot) at (1,-.5);
+\node[mv] (A) at (1,0)  {A} ;
+\node[mv] (B) at (3,3)  {B} ;
+\node[mv] (C) at (5,0)  {C} ;
+\draw [->] (A) -- (C)  node [midway,below,draw=none] {$c$} ;
+\draw [->] (B) -- (C)  node [midway,above,draw=none] {$b$} ;
+\begin{pgfonlayer}{background}
+\node[bgb] (background) [fit = (A) (B) (C) (bot)] {};
+\end{pgfonlayer}
+\end{tikzpicture}
+\end{center}
+
+
+What happens when we expect a temporal relationship between our
+antecedent $A$ and our consequence $C$ to be causally related to our
+second predictor $B$?  A relationship like that is depicted as:
+
+%% Mediation model
+\begin{center}
+\begin{tikzpicture}[thick]
+\tikzstyle{mv} = [draw,fill=white,shape=rectangle]
+\tikzstyle{lv} = [draw,fill=white,shape=circle]
+\tikzstyle{bgb} = [fill=blue!10,thick,draw=black,rounded corners=2mm]
+\tikzstyle{bgy} =  [fill=yellow!10,thick,draw=black,rounded corners=2mm]
+\coordinate (bot) at (1,-.5);
+\node[mv] (A) at (1,0)  {A} ;
+\node[mv] (B) at (3,3)  {B} ;
+\node[mv] (C) at (5,0)  {C} ;
+\draw [->] (A) -- (C)  node [midway,below,draw=none] {$c^\prime$} ;
+\draw [->] (A) -- (B)  node [midway,above,draw=none] {$a$} ;
+\draw [->] (B) -- (C)  node [midway,above,draw=none] {$b$} ;
+\begin{pgfonlayer}{background}
+\node[bgb] (background) [fit = (A) (B) (C) (bot)] {};
+\end{pgfonlayer}
+\end{tikzpicture}
+\end{center}
+
+The model above shows a mediation model whereby $B$ mediates (i.e.,
+sits between) the antecedent $A$ and the consequence $C$.
+Unfortunately, we learned that the GLM restricts us to a single
+dependent variable; thus, we cannot simultaneously analyze prediction
+of $C$ by $A$ and $B$ along with the prediction of $B$ by $A$.  The
+solution to this problem is the basis for today's discussion -
+mediation analysis.
+
+\subsection{Moderation}
+
+Before we get to mediation, I want to contrast mediation with
+moderation.  Many of you already know about moderation because
+moderation is nothing more than an interaction.  This figure shows a
+moderated relationship for our three aforementioned variables:
+
+%% Moderation model
+\begin{center}
+\begin{tikzpicture}[thick]
+\tikzstyle{mv} = [draw,fill=white,shape=rectangle]
+\tikzstyle{lv} = [draw,fill=white,shape=circle]
+\tikzstyle{bgb} = [fill=blue!10,thick,draw=black,rounded corners=2mm]
+\tikzstyle{bgy} =  [fill=yellow!10,thick,draw=black,rounded corners=2mm]
+\coordinate (bot) at (1,-.5);
+\node[mv] (A) at (1,0)  {A} ;
+\node[mv] (B) at (3,3)  {B} ;
+\node[mv] (C) at (5,0)  {C} ;
+\draw [->] (A) -- (C)  node [midway,below,draw=none] {$c$} ;
+\draw [->] (B) -- (3,0)  node [midway,left,draw=none] {$a$} ;
+\draw [->] (B) -- (C)  node [midway,above,draw=none] {$b$} ;
+\begin{pgfonlayer}{background}
+\node[bgb] (background) [fit = (A) (B) (C) (bot)] {};
+\end{pgfonlayer}
+\end{tikzpicture}
+\end{center}
+
+
+\section{Part II: Demonstrate a Mediational Analysis (40 minutes)}
+
+\hrulefill
+\subsection{Purpose:} Solidify conceptual knowledge with an example
+
+\subsection{Objectives:}
+
+\begin{enumerate*}
+\item Describe data and model
+\item Run mediational analysis
+\item Discuss results in detail
+\end{enumerate*}
+\hrulefill
+
+\subsection{The Data and Mediation Model}
+
+A recent Department of Education report on the ``Equity in Athletics''
+provided us with a convenient dataset to demonstrate mediational
+models.  I am only using a small portion of the data for illustrative
+purposes only.  There are probably better datasets than this one but
+it is current and reasonably interesting so that we can all have some
+fun.  You may find the data on the MRES website; please download it if
+you care to run the same models I run below.
+
+<<echo=F,results=tex>>=
+dat <- read.csv("./collegeExpenses.csv",header=T)
+dat <- subset(dat,classification_name=="NCAA Division I-A")
+cdat <- dat[,c(13,19,26,107,166,167)]
+names(cdat) <- c("Ns","FinAid","Recruiting","HeadCoaches","Revenue","Expenses")
+cdat$Profit <- cdat$Revenue - cdat$Expenses
+library(xtable)
+
+out <- cor(cdat,use="pairwise.complete.obs")
+out[upper.tri(out,diag=T)] <- NA
+out <- out[,-7]
+xtable(out,caption="Correlation of relevant variables",label="tab:corr")
+@ 
+
+The data need litle explanation other than to say that these variables
+relate to athletic department revenue and expenditures.  I am
+interested in relating student body size (Nstudents) to recruiting
+expenses and profit.  My model would look like the basic mediational
+model we discussed previously:
+
+
+%% NCAA mediation model
+\begin{center}
+\begin{tikzpicture}[thick]
+\tikzstyle{mv} = [draw,fill=white,shape=rectangle]
+\tikzstyle{lv} = [draw,fill=white,shape=circle]
+\tikzstyle{bgb} = [fill=blue!10,thick,draw=black,rounded corners=2mm]
+\tikzstyle{bgy} =  [fill=yellow!10,thick,draw=black,rounded corners=2mm]
+\coordinate (bot) at (1,-.5);
+\coordinate (top) at (0,3.5);
+\coordinate (L) at (-2,0);
+\coordinate (L2) at (-2,-2);
+\coordinate (R) at (6,0);
+\coordinate (R2) at (6,-2);
+\node[mv] (A1) at (0,0)  {Number of Students} ;
+\node[mv] (B) at (3,3)  {Recruiting Expenses} ;
+\node[mv] (C1) at (5,0)  {Profit} ;
+\node[mv] (A2) at (1,-2)  {Number of Students} ;
+\node[mv] (C2) at (5,-2)  {Profit} ;
+\draw [->] (A1) -- (C1)  node [midway,below,draw=none] {$c^\prime$} ;
+\draw [->] (A1) -- (B)  node [midway,above,draw=none] {$a$} ;
+\draw [->] (B) -- (C1)  node [midway,above,draw=none] {$b$} ;
+\draw [->] (A2) -- (C2)  node [midway,below,draw=none] {$c$} ;
+\begin{pgfonlayer}{background}
+\node[bgb] (background) [fit = (bot) (top) (L) (R)] {};
+\node[bgb] (background) [fit = (A2) (C2) (R2) (L2)] {};
+\end{pgfonlayer}
+\end{tikzpicture}
+\end{center}
+
+
+\subsection{Mediation Analysis}
+
+There are many ways to analyze this simple mediational model.  Perhaps
+the easiest is to use the (now) classic Baron and Kenny method.  Other
+methods exist and most are superior to their approach.  Instead of
+dismissing their approach, I think it is always wise to first learn
+the standard approach and then learn contrasting approaches so you may
+appreciate the improvements.
+
+\subsubsection{The Baron and Kenny method}
+
+Baron and Kenny recommended a multi-step procedure via regression
+equations.  These regression models are very simple and can be done by
+hand if necessary (or even Excel $<$gasp$>$).  Here goes\ldots
+
+\callout{I will run a total of three models.  The first model provides us with
+an estimate of $a$.}
+
+<<echo=F,results=tex>>=
+mrc1 <- lm(Recruiting~Ns,data=cdat)
+xtable(summary(mrc1))
+@ 
+
+\callout{The second model provides us with an estimate of $c$.}
+
+<<echo=F,results=tex>>=
+mrc2 <- lm(Profit~Ns,data=cdat)
+xtable(summary(mrc2))
+@ 
+
+\callout{The third and final model provides us with estimates of $b$ and
+$c^\prime$.}
+
+<<echo=F,results=tex>>=
+mrc3 <- lm(Profit~Ns+Recruiting,data=cdat)
+z <- (round(coef(mrc1)[[2]],2) * round(coef(mrc3)[[3]],2) ) / sqrt(round(coef(mrc3)[[3]],2)^2 * round(coef(summary(mrc1))[[2,2]],2)^2 + round(coef(mrc1)[[2]],2)^2 * round(coef(summary(mrc3))[[3,2]],2)^2)
+xtable(summary(mrc3))
+@ 
+
+We have three models and each of the significance tests passed.  Now
+we must conduct the Sobel test to assess whether mediation seems
+reasonable.
+
+\subsubsection{The Sobel Test}
+
+Does the mediation path ($ab$) exceed zero?  In other words, if we
+multiplied the two paths $a$ and $b$, would we get a significant
+indirect path between Number of Students and Profit via Recruiting
+Expenses?  We may assess the signfiicance by using the Sobel test.
+There are reasons why this test may not be an excellent arbiter of
+mediation but for simplicity and thoroughness, we will conduct the
+Sobel test now and discuss its limitations later.
+
+The Sobel test is defined by the equation below.
+
+\eqncallout{$z = \frac{a \times b}{\sqrt{b^2 s^2_a + a^2 s^2_b}}$}
+
+and for our purposes, we can use the parameter estimates from the MRC
+models above.  Thus, our equation looks like the following
+computation.
+
+\eqncallout{$z = \frac{\Sexpr{round(coef(mrc1)[[2]],2)} \times \Sexpr{round(coef(mrc3)[[3]],2)}}{\sqrt{\Sexpr{round(coef(mrc3)[[3]],2)}^2 \Sexpr{round(coef(summary(mrc1))[[2,2]],2)}^2 + \Sexpr{round(coef(mrc1)[[2]],2)}^2 \Sexpr{round(coef(summary(mrc3))[[3,2]],2)}^2}} = \Sexpr{round(z,2)}$}
+
+Since the value of $z$ is associated with a p-value of
+\Sexpr{round((1-pnorm(z))*2,8)}, we can safely assume that mediation cannot be
+ruled out.  Can we really assume that?  
+
+\subsection{Mediational Model Discussion}
+
+We passed the tests of mediation with ease.  All regression models
+indicated significant paths between the three manifest variables.  We
+assessed the mediation $a \times b$ path by conducting the Sobel test
+and, according to the logic of the Sobel test, mediation cannot be
+ruled out.  As I asked previously, can we really assume that mediation
+is likely given the data?  I intend to go over the logic of mediation
+in its entirety during this section.
+
+
+\section{Part III: Practice Mediational Analysis (50 minutes, 5 minute break)}
+
+\hrulefill
+\subsection{Purpose:} Apply new skills in practice
+
+\subsection{Objectives:}
+
+\begin{enumerate*}
+\item Run mediational analysis on your own
+\item Understand the output
+\item Identify relevant pieces to the process
+\end{enumerate*}
+\hrulefill
+
+\callout{I will walk you through SPSS and the relevant tools for
+mediation.  Everyone will need access to SPSS (or your chosen stats
+package) during the lecture today.}
+
+\section{Part IV:  Beyond the readings  (20 minutes)}
+
+\hrulefill
+\subsection{Purpose:} Provide you with more details than Iacobucci offers
+
+\subsection{Objectives:}
+
+\begin{enumerate*}
+\item Emphasize temporal contiguity in data
+\item Distinguish standard errors, errors of inference, and bootstrapping
+\end{enumerate*}
+\hrulefill
+
+
+\subsection{Temporal contiguity}
+
+I mentioned before that causality gets treated in substantially
+different terms and conditions in statistics than it does in
+philosophy of science.  One thing both parties agree on, however, is
+the role of temporal order between causal agents and effects.  A cause
+must come before an effect; if not, there cannot be strong causal
+inference.  Even weak causal inference may not be appropriate.  I
+intend to discuss the concept of temporal contiguity and its
+importance to strong(er) causal inference.
+
+
+\subsection{Standard Errors, Errors of Inference and the Bootstrap}
+
+The Sobel test tends to be suitable for large samples.  Our example
+provided a relatively large sample so we have little to worry about in
+terms of incorrect inferences.  When samples are smaller than 100, the
+standard errors may not be stable enough to provide reasonable tests
+of mediation.  I want to emphasize that 100 is an arbitrary sample
+size.  Some small samples sizes, however, may provide perfectly
+suitable estimates.  How can you tell whether your sample size is
+adequate?  You cannot do so easily but there are techniques that may
+help you decide whether your sample is suitable for mediation.
+Kristopher Preacher offers some SPSS code that enables you to test the
+stability of the estimate via bootstrapping.  I will discuss the
+concept of bootstrapping but will not run the bootstrapped models.  If
+you would like to run a bootstrapped model, please see the additional
+useful links on the course website.
+
+
+\end{document}
