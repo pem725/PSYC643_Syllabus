@@ -20,6 +20,54 @@ graph LR;
 
 In the above figure(s), we show that the main cause (X) has a direct effect on the outcome (Y).  However, the main cause also has an indirect effect on the outcome through the mediator (M).  The direct effect is denoted by c, the indirect effect by a*b, and the residualized effect by c'.  The residualized effect is the effect of the main cause on the outcome after accounting for the mediator.  The indirect effect is the effect of the main cause on the outcome through the mediator.  The direct effect is the effect of the main cause on the outcome that is not mediated by the mediator.
 
+## LM Demonstration
+
+```{mermaid}
+graph LR;
+  A[Disp] -->|c| B[mpg];
+  X[Disp] -->|c'| Y[mpg];
+  X -->|a| M[drat];
+  M -->|b| Y;
+
+```
+
+
+```{r lmdemo}
+#| echo: true
+#| eval: true
+#| include: true
+#| message: false
+#| warning: false
+#| error: false
+
+data(mtcars)
+lm.0 <- lm(mpg ~ disp, data = mtcars)
+summary(lm.0)
+
+lm.m <- lm(drat~ disp, data = mtcars)
+summary(lm.m)
+
+lm.y <- lm(mpg ~ disp + drat, data = mtcars)
+summary(lm.y)
+
+```
+
+```{r}
+#| echo: true
+#| eval: true
+#| include: true
+#| message: false
+#| warning: false
+#| error: false
+
+out <- mediation::mediate(lm.m, lm.y, treat = "disp", mediator = "drat", boot = TRUE)
+summary(out)
+
+
+
+```
+
+
 ## Shiny Demonstration
 
 

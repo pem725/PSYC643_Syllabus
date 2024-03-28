@@ -922,9 +922,26 @@ mtcars2 %>%
 
 mtcars2 %>%
   dplyr::as_tibble() %>%
+  aov(mpg ~ wt, 
+     data = .) %>%
+  summary()
+
+
+mtcars2 %>%
+  dplyr::as_tibble() %>%
   lm(mpg ~ cyl.f, 
      data = .) %>%
   summary()
+
+contrasts(mtcars2$cyl.f)
+
+mtcars2 %>%
+  dplyr::as_tibble() %>%
+  aov(mpg ~ cyl.f, 
+     data = .) %>%
+  summary()
+
+
 
 mtcars2 %>%
   dplyr::as_tibble() %>%
