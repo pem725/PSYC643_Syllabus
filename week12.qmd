@@ -40,19 +40,40 @@ data(mtcars)
 #| error: false
 
 # Create a simple model
-res <- lm(mpg ~ factor(cyl), data = mtcars)
+res1 <- lm(mpg ~ factor(cyl), data = mtcars)
+res2 <- aov(res1)
+res3 <- aov(mpg~factor(cyl), data = mtcars)
+
 
 # Create the comparison
-comparison <- glht(res)
+comp1 <- glht(res1)
+comp2 <- glht(res2)
+comp3 <- glht(res3)
 
 # Perform the comparison
-summary(comparison)
+comp1
+comp2
+comp3
+
+# Note the similarities?
 
 ```
 
+```{r newEMMs}
+#| echo: true
+#| message: false
+#| warning: false
+#| error: false
 
+# Create the emmeans
+e1m <- emmeans(res1, "cyl")
+# emmeans(res2, "cyl") ## This will not work
+e3m <- emmeans(res3, "cyl")
 
+e1m
+e3m
 
+```
 
 
 
