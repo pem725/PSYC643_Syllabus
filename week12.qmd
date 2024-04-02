@@ -9,7 +9,6 @@ title: "Week 12"
 Probably best to get started by understanding the topic.  We will discuss the rudiments of statistical comparison and why multiple comparisons are so important.  We will also discuss the different types of multiple comparison tests and how to perform them.  For now, I recommend everyone read Scott Maxwell's article from the syllabus and then read the following articles.
 
 - [Getting Started with Multiple Comparisons](https://aosmith.rbind.io/2019/03/25/getting-started-with-emmeans/)
-)
 - [Estimating Marginal Means in R](https://cran.r-project.org/web/packages/emmeans/vignettes/basics.html#contents)
 
 
@@ -37,6 +36,19 @@ data(mtcars)
 #| message: false
 #| warning: false
 #| error: false
+
+# Create a simple model
+res <- lm(mpg ~ factor(cyl), data = mtcars)
+
+# Create the comparison
+comparison <- glht(res)
+
+# Perform the comparison
+summary(comparison)
+
+```
+
+
 
 
 
