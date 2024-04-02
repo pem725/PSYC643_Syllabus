@@ -1,6 +1,7 @@
 ---
 title: "Week 11 - Mediation Demonstration"
-server: shiny
+output:
+  html:
 ---
 
 Today, we introduce mediation analysis.  The purpose of these models is to differentiate between direct and indirect effects of a predictor on an outcome.  Lessons learned here will enable you to understand more complex models in the future.  I begin with some specifics; please refer to [this page](https://library.virginia.edu/data/articles/introduction-to-mediation-analysis) as a reference.
@@ -20,7 +21,7 @@ graph LR;
 
 In the above figure(s), we show that the main cause (X) has a direct effect on the outcome (Y).  However, the main cause also has an indirect effect on the outcome through the mediator (M).  The direct effect is denoted by c, the indirect effect by a*b, and the residualized effect by c'.  The residualized effect is the effect of the main cause on the outcome after accounting for the mediator.  The indirect effect is the effect of the main cause on the outcome through the mediator.  The direct effect is the effect of the main cause on the outcome that is not mediated by the mediator.
 
-## LM Demonstration
+## Linear Model Demonstration
 
 ```{mermaid}
 graph LR;
@@ -32,7 +33,7 @@ graph LR;
 ```
 
 
-```{r lmdemo}
+```{r cmod}
 #| echo: true
 #| eval: true
 #| include: true
@@ -43,16 +44,22 @@ graph LR;
 data(mtcars)
 lm.0 <- lm(mpg ~ disp, data = mtcars)
 summary(lm.0)
-
-lm.m <- lm(drat~ disp, data = mtcars)
-summary(lm.m)
-
-lm.y <- lm(mpg ~ disp + drat, data = mtcars)
-summary(lm.y)
-
 ```
 
-```{r}
+
+```{r medmod}
+lm.m <- lm(drat~ disp, data = mtcars)
+summary(lm.m)
+```
+
+```{r outmod}
+lm.y <- lm(mpg ~ disp + drat, data = mtcars)
+summary(lm.y)
+```
+
+## Mediation Model Demonstration
+
+```{r mediate}
 #| echo: true
 #| eval: true
 #| include: true
@@ -62,7 +69,15 @@ summary(lm.y)
 
 out <- mediation::mediate(lm.m, lm.y, treat = "disp", mediator = "drat", boot = TRUE)
 summary(out)
+```
 
+```{r plot}
+#| echo: true
+#| eval: true
+#| include: true
+#| message: false
+#| warning: false
+#| error: false
 
 
 ```
@@ -77,7 +92,7 @@ Here is a shiny demonstration of mediation analysis. The user can select which e
 
 ```{r libs}
 #| echo: false
-#| eval: true
+#| eval: false
 #| include: false
 #| message: false
 #| warning: false
@@ -90,6 +105,9 @@ library(broom)
 ```
 
 ```{r}
+#| eval: false
+#| echo: false
+#| include: false
 #| panel: sidebar
 #| title: "Mediation Analysis"
 
@@ -100,6 +118,9 @@ sliderInput("N", "Sample Size", min = 50, max = 1000, value = 300, step = 50)
 ```
 
 ```{r}
+#| eval: false
+#| echo: false
+#| include: false
 #| panel: fill
 #| title: "Mediation Analysis"
 
@@ -109,6 +130,9 @@ tableOutput("modSum")
 ```
 
 ```{r}
+#| eval: false
+#| echo: false
+#| include: false
 #| context: server
 #| title: "Mediation Analysis"
 
@@ -141,6 +165,9 @@ output$modSum <- renderTable({
 
 
 ```{r}
+#| eval: false
+#| echo: false
+#| include: false
 input <- list(sigEffs = c("a", "b", "c"), boot = TRUE)
 
   x <- rnorm(1000, 1, 3)
