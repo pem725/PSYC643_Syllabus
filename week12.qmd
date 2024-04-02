@@ -22,6 +22,8 @@ Probably best to get started by understanding the topic.  We will discuss the ru
 
 # Load the libraries
 library(tidyverse)
+library(tidyr)
+library(tidymodels)
 library(multcomp)
 library(emmeans)
 library(ggplot2)
