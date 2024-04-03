@@ -80,11 +80,126 @@ e3m
 
 # Thursday
 
-Repeated Measures
+Repeated Measures in ANOVA and MRC.  Brace yourselves for one of the more challenging topics in all of statistics.  We could spend multiple semesters on this topic alone.  My focus here lies with the basics of repeated measures and how to perform them in R.  For those with specific interests in repeated measures, I strongly encourage you to refer to the assigned readings and include a few others such as:
 
-## MRC
+- [SDAM: Repeated Measures ANOVA](https://mspeekenbrink.github.io/sdam-book/ch-RM-ANOVA.html)
+- [SDAM: Howto in R](https://mspeekenbrink.github.io/sdam-r-companion/repeated-measures-anova.html)
+- [UCLA Stat Methods and Data Analysis](https://stats.oarc.ucla.edu/r/seminars/repeated-measures-analysis-with-r/)
+- [Datanovia Example](https://www.datanovia.com/en/lessons/repeated-measures-anova-in-r/)
 
-## ANOVA
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| error: false
+
+# Create the data
+dat <- data.frame(
+  id = rep(1:10,3),
+  admin = as.factor(rep(c("pretest", "posttest", "followup"), each = 10)),
+  stress = c(rnorm(10, 100, 10), rnorm(10, 105, 10), rnorm(10, 110, 10))
+)
+
+# Create the model
+res <- aov(stress ~ admin + Error(id), data = dat)
+
+# Perform the comparison
+summary(res)
+
+# Create the emmeans
+emmeans(res, "admin")
+
+```
+
+## Things to notice
+
+1. The data is in long format
+2. The model is specified with the Error() function
+3. The emmeans function is used to calculate the means
+
+Balanced data is essential for this type of analysis.  If you have unbalanced data, you will need to use the lmer function from the lme4 package.  You will learn more about this step in the future - particularly when you enroll in the longitudinal data analysis course here in our department.
 
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| error: false
+
+# Load the libraries
+library(lme4)
+
+# Create the model
+res2 <- lmer(stress ~ admin + (1|id), data = dat)
+
+# Summarize the model
+summary(res2)
+
+# Create the emmeans
+emmeans(res2, "admin")
+
+```
+
+## A twist on a classic
+
+The following example is a classic example of repeated measures.  It is a bit more complex than the previous example.  I encourage you to read the following article on the topic:
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| error: false
+
+# Load the libraries
+library(lme4) ## already loaded from previous code chunk but for completeness, I loaded it here.
+
+# Create a few new variables in the data
+dat$time <- rep(1:3, each = 10)
+dat$group <- as.factor(rep(1:2, each = 15))
+
+# Create the model inclusive of new variables
+res3 <- lmer(stress ~ time + group + (1|id), data = dat)
+
+# Present a summary of the results
+summary(res3)
+
+```
+
+## Where have all the p-values gone?
+
+The p-values are not present in the output of lmer by default.  The absence is not due to a mistake but rather by design.  The p-values are not reliable in mixed models.  Many of us prefer these unreliable indices so that we may publish our findings in reputable journals.  Again, the p-values are NOT reliable.  You have been warned.
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| error: false
+
+# Load the libraries
+library(lmerTest)
+
+# Run the model (again)
+res4 <- lmer(stress ~ time + group + (1|id), data = dat)
+
+# Results summary
+summary(res4)
+
+```
+
+
+## A final note
+
+Repeated measures are a complex topic.  I encourage you to read the assigned readings and the additional readings I have provided.  This is a topic that will require a lot of practice to master.  I will provide additional examples in the future to help you understand the topic better.  For now, I encourage you to practice with the examples I have provided and to ask questions if you have any.
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+#| error: false
+
+# Create the emmeans
+emmeans(res3, "time")
+emmeans(res3, "group")
+
+```
 
