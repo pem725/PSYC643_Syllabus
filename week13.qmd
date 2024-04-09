@@ -1,0 +1,13 @@
+---
+title: "Week 13"
+output: 
+  html:
+---
+
+# Tuesday
+
+Q & A - where are we and where do we want to wrap up? (on board)
+
+# Thursday
+
+Workflow and Timeline
