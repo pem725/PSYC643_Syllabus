@@ -14,3 +14,4 @@ tmp/**
 *_files/**
 *.html
 *.pdf
+*.log
