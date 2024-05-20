@@ -1,0 +1,46 @@
+---
+title: "Week 14"
+---
+
+Today we are going to discuss the generalized lineark model - not the GLM or general linear model.
+
+```{r}
+library(tidyverse)
+
+# generate data for a logistic regression demostration
+
+set.seed(123)
+n <- 100
+x <- rnorm(n)
+y <- rbinom(n, 1, plogis(0.5 + 0.5 * x))
+data <- tibble(x, y)
+
+# plot the data
+ggplot(data, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"))
+```
+
+```{r}
+# fit a logistic regression model
+model <- glm(y ~ x, data = data, family = "binomial")
+summary(model)
+exp(coef(model))
+```
+
+```{r}
+# plot the data and the model
+
+ggplot(data, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial")) +
+  geom_abline(intercept = coef(model)[1], slope = coef(model)[2], color = "red")
+```
+
+```{r}
+# predict the probability of y = 1 for a new value of x
+new_data <- tibble(x = 0)
+predict(model, newdata = new_data, type = "response")
+```
+
+
